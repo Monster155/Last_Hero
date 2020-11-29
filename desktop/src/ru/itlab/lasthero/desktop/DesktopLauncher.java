@@ -2,11 +2,17 @@ package ru.itlab.lasthero.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
+import ru.itlab.lasthero.Controller;
 import ru.itlab.lasthero.MainActivity;
 
+import static ru.itlab.lasthero.GamePreferences.BASIC_SCREEN_SIZE;
+
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new MainActivity(), config);
-	}
+    public static void main(String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.width = (int) BASIC_SCREEN_SIZE.x;
+        config.height = (int) BASIC_SCREEN_SIZE.y;
+        new LwjglApplication(new MainActivity(Controller.ModuleID.DESKTOP), config);
+    }
 }

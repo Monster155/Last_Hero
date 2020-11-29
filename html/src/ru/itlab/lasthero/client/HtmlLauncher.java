@@ -3,6 +3,8 @@ package ru.itlab.lasthero.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
+
+import ru.itlab.lasthero.Controller;
 import ru.itlab.lasthero.MainActivity;
 
 public class HtmlLauncher extends GwtApplication {
@@ -46,6 +48,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new MainActivity();
+                return new MainActivity(Controller.ModuleID.HTML);
         }
 }

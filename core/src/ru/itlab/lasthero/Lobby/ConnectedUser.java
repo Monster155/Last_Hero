@@ -9,13 +9,13 @@ public class ConnectedUser {
         this.ipAddress = ipAddress;
     }
 
-    public static ConnectedUser setConnectedUser(String data) {
-        String[] info = data.split("&");
-        return new ConnectedUser(info[1], info[2]);
+    public String getConnectedUser() {
+        return getName() + "&" + getIpAddress();
     }
 
-    public String getConnectedUser(ConnectedUser user) {
-        return user.getName() + "&" + user.getIpAddress();
+    public static ConnectedUser setConnectedUser(String data) {
+        String[] info = data.split("&");
+        return new ConnectedUser(info[0], info[1]);
     }
 
     public String getName() {

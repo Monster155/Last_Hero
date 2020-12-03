@@ -1,11 +1,12 @@
 package ru.itlab.lasthero.Lobby;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Align;
 
 import ru.itlab.lasthero.GamePreferences;
 
@@ -18,12 +19,12 @@ public class LobbyUser extends Actor {
     public LobbyUser(ConnectedUser user, int id) {
         this.user = user;
         font = new BitmapFont(Gdx.files.internal("RuEn.fnt"));
-        glyphName = new GlyphLayout(font, user.getName());
+        glyphName = new GlyphLayout(font, user.getName(), Color.BLUE, 100, Align.left, false);
         glyphIP = new GlyphLayout(font, user.getIpAddress());
         setBounds(0,
-                GamePreferences.BASIC_SCREEN_SIZE.y / 5 * id,
-                GamePreferences.BASIC_SCREEN_SIZE.x,
-                GamePreferences.BASIC_SCREEN_SIZE.y / 5);
+                GamePreferences.BASE_SCREEN_SIZE.y / 5 * id,
+                GamePreferences.BASE_SCREEN_SIZE.x,
+                GamePreferences.BASE_SCREEN_SIZE.y / 5);
     }
 
     @Override

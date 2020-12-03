@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import ru.itlab.lasthero.Player.Player;
 
-import static ru.itlab.lasthero.GamePreferences.BASIC_SCREEN_SIZE;
+import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
 
 public class BattleScreen implements Screen {
 
@@ -33,8 +33,8 @@ public class BattleScreen implements Screen {
         testObjectTexture = new Texture(Gdx.files.internal("top-down-shooter-1/background/door.gif"));
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, BASIC_SCREEN_SIZE.x, BASIC_SCREEN_SIZE.y);
-        viewport = new ExtendViewport(BASIC_SCREEN_SIZE.x, BASIC_SCREEN_SIZE.y, camera); // change this to your needed viewport
+        camera.setToOrtho(false, BASE_SCREEN_SIZE.x, BASE_SCREEN_SIZE.y);
+        viewport = new ExtendViewport(BASE_SCREEN_SIZE.x, BASE_SCREEN_SIZE.y, camera); // change this to your needed viewport
         stage = new Stage(viewport);
 
         player = new Player(new Vector2(20, 20), camera);

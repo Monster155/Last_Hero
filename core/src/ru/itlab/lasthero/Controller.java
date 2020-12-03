@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import static ru.itlab.lasthero.GamePreferences.BASIC_SCREEN_SIZE;
+import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
 
 public class Controller extends Actor {
 
@@ -57,7 +57,7 @@ public class Controller extends Actor {
                 moveDirection.x /= 1.4f;
                 moveDirection.y /= 1.4f;
             }
-            attackDirection = new Vector2(Gdx.input.getX() - BASIC_SCREEN_SIZE.x / 2, Gdx.input.getY() - BASIC_SCREEN_SIZE.y / 2);
+            attackDirection = new Vector2(Gdx.input.getX() - BASE_SCREEN_SIZE.x / 2, Gdx.input.getY() - BASE_SCREEN_SIZE.y / 2);
             //find scaled coordinates (not need now)
 //            float scale = (float) Math.sqrt(attackDirection.x * attackDirection.x + attackDirection.y * attackDirection.y);
 //            attackDirection.x = attackDirection.x / scale;

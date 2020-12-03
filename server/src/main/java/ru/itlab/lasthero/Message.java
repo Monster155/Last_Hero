@@ -12,7 +12,7 @@ public class Message implements Serializable {
 
     public static Message setSentMessage(String data) {
         data = data.trim();
-        String dataArr[] = data.split("&");
+        String dataArr[] = data.split(Protocol.DIVIDER);
         float x = Float.parseFloat(dataArr[0]);
         float y = Float.parseFloat(dataArr[1]);
         return new Message(x, y);
@@ -27,6 +27,6 @@ public class Message implements Serializable {
     }
 
     public String getMessageToSend() {
-        return x + "&" + y;
+        return x + Protocol.DIVIDER + y;
     }
 }

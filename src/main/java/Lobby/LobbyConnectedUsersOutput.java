@@ -27,6 +27,7 @@ public class LobbyConnectedUsersOutput {
         try {
             for (LobbyConnectedUsersInput userIn : usersIn) {
                 out.writeObject("01"+userIn.getUser().getConnectedUser());
+                System.out.println("01"+userIn.getUser().getConnectedUser());
                 out.flush();
             }
         } catch (IOException e) {

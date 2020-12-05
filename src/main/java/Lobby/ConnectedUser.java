@@ -1,6 +1,4 @@
-package ru.itlab.lasthero.Lobby;
-
-import ru.itlab.lasthero.Protocol;
+package Lobby;
 
 public class ConnectedUser {
     private String name;
@@ -12,13 +10,12 @@ public class ConnectedUser {
     }
 
     public String getConnectedUser() {
-        return getName() + Protocol.DIVIDER + getIpAddress();
+        return getName() + "&$&@" + getIpAddress();
     }
 
     public static ConnectedUser setConnectedUser(String data) {
-        String[] info = data.split(Protocol.DIVIDER);
-//        return new ConnectedUser(info[0], info[1]);
-        return new ConnectedUser("Player 1", "1236732.2346");
+        String[] info = data.split("&$&@");
+        return new ConnectedUser(info[1], info[2]);
     }
 
     public String getName() {

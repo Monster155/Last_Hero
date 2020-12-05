@@ -2,70 +2,55 @@ package ru.itlab.lasthero.Lobby;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.ArrayList;
-
 import ru.itlab.lasthero.MainActivity;
+import ru.itlab.lasthero.NewLobby.Room;
+import ru.itlab.lasthero.NewLobby.User;
 
 import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
 
 public class LobbyScreen implements Screen {
 
-    private Group lobbyUsers;
-    private ArrayList<ConnectedUser> users;
+    private MainActivity ma;
 
-    private MainActivity mainActivity;
+    private User user;
+    private Room room;
+    private LobbyInfoActor lobbyInfoActor;
 
     private OrthographicCamera camera;
     private Viewport viewport;
     private Stage stage;
-    private boolean isReady = false;
 
-    public LobbyScreen(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    private Group lobbyUsers;
+
+    public LobbyScreen(MainActivity ma) {
+        this.ma = ma;
     }
 
-    public void init() {
-        users = new ArrayList<>();
-        NewUsersConnector connector = new NewUsersConnector(users);
-        if (!connector.isHasConnection()) {
-            mainActivity.menuScreen.setHasNoConnection(true);
-            mainActivity.setScreen(mainActivity.menuScreen);
-        }
-        isReady = true;
+    public void init(User user, Room room) {
+        this.user = user;
+        this.room = room;
+        user.connectToRoom(room);
     }
 
     @Override
     public void show() {
         lobbyUsers = new Group();
+        lobbyInfoActor = new LobbyInfoActor(room);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, BASE_SCREEN_SIZE.x, BASE_SCREEN_SIZE.y);
         viewport = new ExtendViewport(BASE_SCREEN_SIZE.x, BASE_SCREEN_SIZE.y, camera); // change this to your needed viewport
         stage = new Stage(viewport);
 
+        stage.addActor(lobbyInfoActor);
         stage.addActor(lobbyUsers);
-
-        TextField textField = new TextField("", new TextField.TextFieldStyle(
-                new BitmapFont(Gdx.files.internal("RuEn.fnt")),
-                Color.WHITE,
-                new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("UI/TF_Cursor.png")))),
-                new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("UI/TF_Selector.png")))),
-                new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("UI/TF_Back.png"))))));
-        textField.setBounds(0, BASE_SCREEN_SIZE.y - 300, 100, 300);
-        stage.addActor(textField);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -107,15 +92,11 @@ public class LobbyScreen implements Screen {
     }
 
     public void addNewPlayer() {
-        if (users.size() < 1) return;
-        System.out.println("New users count: " + users.size());
-        for (ConnectedUser user : users) {
-            lobbyUsers.addActor(new LobbyUser(user, lobbyUsers.getChildren().size));
-        }
-        users.clear();
-    }
-
-    public boolean isReady() {
-        return isReady;
+        if (room.getUsers().size() < 1) return;
+        System.out.println("New users count: " + room.getUsers().size());
+        lobbyUsers.addActor(
+                new LobbyUserActor(
+                        room.getUsers().remove(room.getUsers().keySet().toArray()[0]),
+                        lobbyUsers.getChildren().size));
     }
 }

@@ -10,17 +10,17 @@ import com.badlogic.gdx.utils.Align;
 
 import ru.itlab.lasthero.GamePreferences;
 
-public class LobbyUser extends Actor {
+public class LobbyUserActor extends Actor {
 
-    private ConnectedUser user;
+    private OtherUser otherUser;
     private BitmapFont font;
     private GlyphLayout glyphName, glyphIP;
 
-    public LobbyUser(ConnectedUser user, int id) {
-        this.user = user;
+    public LobbyUserActor(OtherUser otherUser, int id) {
+        this.otherUser = otherUser;
         font = new BitmapFont(Gdx.files.internal("RuEn.fnt"));
-        glyphName = new GlyphLayout(font, user.getName(), Color.BLUE, 100, Align.left, false);
-        glyphIP = new GlyphLayout(font, user.getIpAddress());
+        glyphName = new GlyphLayout(font, otherUser.getName(), Color.BLUE, 100, Align.left, false);
+        glyphIP = new GlyphLayout(font, otherUser.getIpAddress());
         setBounds(0,
                 GamePreferences.BASE_SCREEN_SIZE.y / 5 * id,
                 GamePreferences.BASE_SCREEN_SIZE.x,
@@ -34,7 +34,7 @@ public class LobbyUser extends Actor {
 
         font.draw(batch, glyphName, 20, (getHeight() + glyphName.height) / 2 + getY());
         font.draw(batch, glyphIP, getWidth() - glyphIP.width - 20, (getHeight() + glyphName.height) / 2 + getY());
-        System.out.println(user.getName() + " y = " + ((getHeight() + glyphName.height) / 2 + getY()));
+        System.out.println(otherUser.getName() + " y = " + ((getHeight() + glyphName.height) / 2 + getY()));
     }
 
     @Override

@@ -37,12 +37,12 @@ public class MenuScreen implements Screen {
     private boolean hasNoConnection;
     private BitmapFont font;
 
-    private MainActivity mainActivity;
+    private MainActivity ma;
     private LoadingScreen loadingScreen;
 
-    public MenuScreen(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-        loadingScreen = new LoadingScreen(mainActivity, mainActivity.lobbyScreen);
+    public MenuScreen(MainActivity ma) {
+        this.ma = ma;
+        loadingScreen = new LoadingScreen(ma, ma.lobbyScreen);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MenuScreen implements Screen {
         startBtn.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                mainActivity.setScreen(mainActivity.lobbyListScreen);
+                ma.setScreen(ma.lobbyListScreen);
                 //TODO check this (was loadingScreen)
                 return super.touchDown(event, x, y, pointer, button);
             }

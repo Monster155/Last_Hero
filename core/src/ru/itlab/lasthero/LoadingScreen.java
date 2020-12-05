@@ -12,14 +12,14 @@ import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
 
 public class LoadingScreen implements Screen {
 
-    private MainActivity mainActivity;
+    private MainActivity ma;
     private LobbyScreen lobbyScreen;
     private Texture texture;
     private SpriteBatch batch;
     private float size;
 
-    public LoadingScreen(MainActivity mainActivity, LobbyScreen lobbyScreen) {
-        this.mainActivity = mainActivity;
+    public LoadingScreen(MainActivity ma, LobbyScreen lobbyScreen) {
+        this.ma = ma;
         this.lobbyScreen = lobbyScreen;
     }
 
@@ -46,9 +46,9 @@ public class LoadingScreen implements Screen {
         batch.draw(texture, (BASE_SCREEN_SIZE.x - size) / 2, (BASE_SCREEN_SIZE.y - size) / 2, size, size);
         batch.end();
 
-        if (lobbyScreen.isReady()) {
-            mainActivity.setScreen(lobbyScreen);
-        }
+//        if (lobbyScreen.isReady()) {
+//            ma.setScreen(lobbyScreen);
+//        }
     }
 
     @Override

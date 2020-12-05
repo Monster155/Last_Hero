@@ -9,6 +9,6 @@
 	<entry-point class='ru.itlab.lasthero.client.HtmlLauncher' />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
-	<set-property name="user.agent" value="gecko1_8, safari"/>
-	<collapse-property name="user.agent" values="*" />
+	<set-property name="otherUser.agent" value="gecko1_8, safari"/>
+	<collapse-property name="otherUser.agent" values="*" />
 </module>

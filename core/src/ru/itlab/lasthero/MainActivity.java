@@ -3,8 +3,9 @@ package ru.itlab.lasthero;
 import com.badlogic.gdx.Game;
 
 import ru.itlab.lasthero.Lobby.LobbyScreen;
-import ru.itlab.lasthero.Lobby.NewLobby.LobbyListScreen;
 import ru.itlab.lasthero.Menu.MenuScreen;
+import ru.itlab.lasthero.NewLobby.LobbyListScreen;
+import ru.itlab.lasthero.NewLobby.User;
 
 public class MainActivity extends Game {
 
@@ -17,7 +18,7 @@ public class MainActivity extends Game {
         battleScreen = new BattleScreen(moduleID);
         lobbyScreen = new LobbyScreen(this);
         menuScreen = new MenuScreen(this);
-        lobbyListScreen = new LobbyListScreen();
+        lobbyListScreen = new LobbyListScreen(this);
     }
 
     @Override

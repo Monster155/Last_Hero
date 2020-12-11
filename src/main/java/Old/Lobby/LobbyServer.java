@@ -1,4 +1,4 @@
-package Lobby;
+package Old.Lobby;
 
 import Server.Protocol;
 
@@ -14,7 +14,7 @@ public class LobbyServer {
         ArrayList<LobbyConnectedUsersInput> usersIn = new ArrayList<LobbyConnectedUsersInput>();
         LobbyConnectedUsersOutput usersOut = new LobbyConnectedUsersOutput(usersIn);
         try {
-            System.out.println("Lobby server starts...");
+            System.out.println("Old.Lobby server starts...");
             ServerSocket server = new ServerSocket(Protocol.PORT);
             while (true) {
                 usersIn.add(new LobbyConnectedUsersInput(server.accept(), usersIn.size(), usersOut, usersIn));
@@ -28,4 +28,5 @@ public class LobbyServer {
             e.printStackTrace();
         }
     }
+    //TODO change max count of Users in lobby to 10
 }

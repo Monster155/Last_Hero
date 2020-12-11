@@ -1,4 +1,4 @@
-package Lobby;
+package Old.Lobby;
 
 public class ConnectedUser {
     private String name;

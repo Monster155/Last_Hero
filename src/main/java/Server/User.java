@@ -23,7 +23,6 @@ public class User extends Thread {
         out = new ObjectOutputStream(socket.getOutputStream());
         broadcast = new Broadcast(users);
         start();
-
     }
 
 

@@ -1,4 +1,4 @@
-package NewLobby;
+package Old.NewLobby;
 
 import Server.Protocol;
 
@@ -12,7 +12,7 @@ public class LobbyServer {
         ArrayList<User> users = new ArrayList<User>();
         RoomsController roomsController;
         try {
-            System.out.println("Lobby server starts...");
+            System.out.println("Old.Lobby server starts...");
             ServerSocket server = new ServerSocket(Protocol.PORT);
             rooms.add(new Room("Room 1", server.getInetAddress().getHostAddress(), 1));
             roomsController = new RoomsController(rooms, users, server.getInetAddress().getHostAddress());

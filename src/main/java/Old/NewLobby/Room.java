@@ -1,4 +1,4 @@
-package NewLobby;
+package Old.NewLobby;
 
 import Server.Protocol;
 

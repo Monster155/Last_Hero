@@ -138,6 +138,24 @@ public class User extends Thread {
         }
     }
 
+    public void prepareToStart(int timeBeforeStart) {
+        try {
+            out.writeObject("03" + timeBeforeStart);
+            out.flush();
+        } catch (IOException e) {
+            System.out.println(e.getMessage() + " : " + e.getCause());
+        }
+    }
+
+    public void startGame() {
+        try {
+            out.writeObject("04" + Protocol.GAME_PORT);
+            out.flush();
+        } catch (IOException e) {
+            System.out.println(e.getMessage() + " : " + e.getCause());
+        }
+    }
+
 
     public void setUserName(String name) {
         this.name = name;

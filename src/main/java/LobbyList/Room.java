@@ -3,9 +3,12 @@ package LobbyList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Room {
     private final int MAX_COUNT_OF_USERS = 10;
+    private final int TIME_BEFORE_START = 5000;
     private HashMap<Integer, User> connectedUsers;
     private int usersCount;
     private int id;
@@ -14,6 +17,7 @@ public class Room {
     private boolean isInGame;
     private ArrayList<Boolean> usedIds;
     private ArrayList<User> users;
+    private Timer timer;
 
     public Room(String name, String ip, int id, ArrayList<User> users) {
         this.name = name;
@@ -23,6 +27,8 @@ public class Room {
         connectedUsers = new HashMap<>();
         usersCount = 0;
         usedIds = new ArrayList<>();
+        isInGame = false;
+        timer = new Timer();
         showNewRoom();
     }
 
@@ -68,6 +74,9 @@ public class Room {
         connectedUsers.put(user.getUserId(), user);
         users.remove(user);
         update(user, true);
+        if (usersCount == MAX_COUNT_OF_USERS) {
+            prepareToStart();
+        }
         return true;
     }
 
@@ -77,6 +86,10 @@ public class Room {
         connectedUsers.remove(user);
         users.add(user);
         update(user, false);
+        if (isInGame) {
+            isInGame = false;
+            stopPrepareToStart();
+        }
         return true;
     }
 
@@ -112,4 +125,32 @@ public class Room {
     public int getUsersCount() {
         return usersCount;
     }
+
+    public void prepareToStart() {
+        isInGame = true;
+        for (User u : connectedUsers.values()) {
+            u.prepareToStart(TIME_BEFORE_START);
+        }
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                startGame();
+            }
+        }, TIME_BEFORE_START);
+    }
+
+    private void startGame() {
+        if (!isInGame) return;
+        for (User u : connectedUsers.values()) {
+            u.startGame();
+        }
+    }
+
+    private void stopPrepareToStart() {
+        timer.cancel();
+        for (User u : connectedUsers.values()) {
+            u.prepareToStart(0);
+        }
+    }
+
 }

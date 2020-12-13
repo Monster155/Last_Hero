@@ -10,16 +10,18 @@ import java.util.HashMap;
 
 public class LobbyListServer {
     public static void main(String[] args) {
-        HashMap<Integer, Room> rooms = new HashMap<Integer, Room>();
+        HashMap<Integer, Room> rooms = new HashMap<>();
         ArrayList<User> users = new ArrayList<>();
         RoomController roomController;
         try {
             System.out.println("Lobby server starts...");
             ServerSocket server = new ServerSocket(Protocol.PORT);
-            rooms.put(1, new Room("Room 1", server.getInetAddress().getHostAddress(), 1, users));
+            for (int i = 1; i <= 3; i++) {
+                rooms.put(i, new Room("Room " + i, server.getInetAddress().getHostAddress(), i, users));
+            }
             roomController = new RoomController(rooms, users, server.getInetAddress().getHostAddress());
             while (true) {
-                User user = new User(server.accept(), rooms);
+                User user = new User(server.accept(), rooms, users);
                 users.add(user);
                 System.out.println("Users count: " + users.size());
             }

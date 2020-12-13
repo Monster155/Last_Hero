@@ -35,13 +35,13 @@ public class RoomController extends Thread {
                 int freeID = -1;
                 for (int i = 0; i < usedIDs.size(); i++) {
                     if (!usedIDs.get(i)) {
-                        freeID = i + 1;
+                        freeID = i;
                         usedIDs.set(i, true);
                     }
                 }
                 if (freeID == -1) {
-                    usedIDs.add(true);
                     freeID = usedIDs.size();
+                    usedIDs.add(true);
                 }
                 rooms.put(freeID, new Room("Room " + (rooms.size() + 1), serverIP, freeID, users));
             }

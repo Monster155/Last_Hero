@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class User extends Thread {
@@ -17,11 +18,13 @@ public class User extends Thread {
     private Room connectedRoom;
     private int userId;
     private String ip;
-    private String name;
+    private String userName;
 
+    private ArrayList<User> users;
 
-    public User(Socket socket, HashMap<Integer, Room> rooms) {
+    public User(Socket socket, HashMap<Integer, Room> rooms, ArrayList<User> users) {
         this.rooms = rooms;
+        this.users = users;
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
@@ -50,16 +53,16 @@ public class User extends Thread {
                     case 1:
                         connectToRoom(Integer.parseInt(info[0]), info[1]);
                         break;
-                    //
+                    // disconnect from Room
                     case 2:
-
+                        disconnectFromRoom();
                         break;
                 }
             }
         } catch (SocketException e) {
-            disconnectFromRoom();
-            System.out.println("Disconnected");
+            disconnectFromServer();
             interrupt();
+            System.out.println("Disconnected " + isInterrupted());
         } catch (IOException e) {
             System.out.println(e.getMessage() + " : " + e.getCause());
         } catch (ClassNotFoundException e) {
@@ -73,18 +76,25 @@ public class User extends Thread {
     }
 
     private void connectToRoom(int id, String name) {
+        setUserName(name);
         if (rooms.get(id).connectUser(this)) {
-            sendMessage("04" + true);
+            sendMessage("04" + id);
             connectedRoom = rooms.get(id);
-            setUserName(name);
-            System.out.println("User with id:" + userId + "connected to room");
+            connectedRoom.showUsers(this);
+            System.out.println("User with id " + userId + " connected to room");
         } else {
-            sendMessage("04" + false);
+            sendMessage("04" + "-1");
         }
     }
 
     private void disconnectFromRoom() {
         connectedRoom.disconnectUser(this);
+    }
+
+    private void disconnectFromServer() {
+        if (connectedRoom != null)
+            disconnectFromRoom();
+        users.remove(this);
     }
 
     public void roomUpd(int id, int userCounts) {
@@ -93,7 +103,7 @@ public class User extends Thread {
 
     public void roomUpd(User user, Boolean isNew) {
         if (isNew) {
-            sendMessage("01" + user.getName() + Protocol.DIVIDER + user.getIp() + Protocol.DIVIDER + user.getUserId());
+            sendMessage("01" + user.getUserName() + Protocol.DIVIDER + user.getIp() + Protocol.DIVIDER + user.getUserId());
         } else {
             sendMessage("02" + user.getUserId());
         }
@@ -122,15 +132,15 @@ public class User extends Thread {
     }
 
     private boolean sendMessage(String message) {
-        // 01 - (room update) add new user
-        // 02 - (room update) remove user
-        // 03 - (room update) update users count in room
-        // 04 - (room update) is connected to room (true/false)
+        // 01 - (room update) add new user (name, ip, id)
+        // 02 - (room update) remove user (id)
+        // 03 - (room update) prepare to start (time before start)
+        // 04 - (room update) start game (game port)
 
-        // 01 - accept new room
-        // 02 - remove room
-        // 03 - prepare to start
-        // 04 - start game
+        // 01 - accept new room (name, ip, id)
+        // 02 - remove room (id)
+        // 03 - update users count in room (id, UC)
+        // 04 - is connected to room (true/false)
         try {
             out.writeObject(message);
             out.flush();
@@ -141,12 +151,15 @@ public class User extends Thread {
         }
     }
 
-    public void setUserName(String name) {
-        this.name = name;
-    }
-
     public String getIp() {
         return ip;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String name) {
+        this.userName = name;
+    }
 }

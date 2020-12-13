@@ -71,19 +71,25 @@ public class Room {
         }
         usersCount++;
         user.setId(getUserIdInRoom());
-        connectedUsers.put(user.getUserId(), user);
         users.remove(user);
         update(user, true);
+        connectedUsers.put(user.getUserId(), user);
         if (usersCount == MAX_COUNT_OF_USERS) {
             prepareToStart();
         }
         return true;
     }
 
+    public void showUsers(User user) {
+        for (User u : connectedUsers.values()) {
+            user.roomUpd(u, true);
+        }
+    }
+
     public boolean disconnectUser(User user) {
         usersCount--;
         removeUserId(user);
-        connectedUsers.remove(user);
+        connectedUsers.remove(user.getUserId());
         users.add(user);
         update(user, false);
         if (isInGame) {
@@ -99,7 +105,6 @@ public class Room {
         }
         for (User u : connectedUsers.values()) {
             u.roomUpd(user, isNew);
-
         }
     }
 
@@ -107,13 +112,14 @@ public class Room {
         int freeID = -1;
         for (int i = 0; i < usedIds.size(); i++) {
             if (!usedIds.get(i)) {
-                freeID = i + 1;
+                freeID = i;
                 usedIds.set(i, true);
+                break;
             }
         }
         if (freeID == -1) {
-            usedIds.add(true);
             freeID = usedIds.size();
+            usedIds.add(true);
         }
         return freeID;
     }
@@ -149,7 +155,7 @@ public class Room {
     private void stopPrepareToStart() {
         timer.cancel();
         for (User u : connectedUsers.values()) {
-            u.prepareToStart(0);
+            u.prepareToStart(-1);
         }
     }
 

@@ -73,19 +73,14 @@ public class User extends Thread {
     }
 
     private void connectToRoom(int id, String name) {
-        try {
-            if (rooms.get(id).connectUser(this)) {
-                out.writeObject("04" + true);
-                connectedRoom = rooms.get(id);
-                setUserName(name);
-                System.out.println("User with id:" + userId + "connected to room");
-            } else {
-                out.writeObject("04" + false);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + " : " + e.getCause());
+        if (rooms.get(id).connectUser(this)) {
+            sendMessage("04" + true);
+            connectedRoom = rooms.get(id);
+            setUserName(name);
+            System.out.println("User with id:" + userId + "connected to room");
+        } else {
+            sendMessage("04" + false);
         }
-
     }
 
     private void disconnectFromRoom() {
@@ -93,24 +88,14 @@ public class User extends Thread {
     }
 
     public void roomUpd(int id, int userCounts) {
-        try {
-            out.writeObject("03" + id + Protocol.DIVIDER + userCounts);
-            out.flush();
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + " : " + e.getCause());
-        }
+        sendMessage("03" + id + Protocol.DIVIDER + userCounts);
     }
 
     public void roomUpd(User user, Boolean isNew) {
-        try {
-            if (isNew) {
-                out.writeObject("01" + user.getName() + Protocol.DIVIDER + user.getIp() + Protocol.DIVIDER + user.getUserId());
-            } else {
-                out.writeObject("02" + user.getUserId());
-            }
-            out.flush();
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + " : " + e.getCause());
+        if (isNew) {
+            sendMessage("01" + user.getName() + Protocol.DIVIDER + user.getIp() + Protocol.DIVIDER + user.getUserId());
+        } else {
+            sendMessage("02" + user.getUserId());
         }
     }
 
@@ -121,41 +106,40 @@ public class User extends Thread {
     }
 
     public void acceptNewRoom(Room room) {
-        try {
-            out.writeObject("01" + room.getName() + Protocol.DIVIDER + room.getIp() + Protocol.DIVIDER + room.getId());
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendMessage("01" + room.getName() + Protocol.DIVIDER + room.getIp() + Protocol.DIVIDER + room.getId());
     }
 
     public void removeRoom(Room room) {
-        try {
-            out.writeObject("02" + room.getId());
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendMessage("02" + room.getId());
     }
 
     public void prepareToStart(int timeBeforeStart) {
-        try {
-            out.writeObject("03" + timeBeforeStart);
-            out.flush();
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + " : " + e.getCause());
-        }
+        sendMessage("03" + timeBeforeStart);
     }
 
     public void startGame() {
-        try {
-            out.writeObject("04" + Protocol.GAME_PORT);
-            out.flush();
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + " : " + e.getCause());
-        }
+        sendMessage("04" + Protocol.GAME_PORT);
     }
 
+    private boolean sendMessage(String message) {
+        // 01 - (room update) add new user
+        // 02 - (room update) remove user
+        // 03 - (room update) update users count in room
+        // 04 - (room update) is connected to room (true/false)
+
+        // 01 - accept new room
+        // 02 - remove room
+        // 03 - prepare to start
+        // 04 - start game
+        try {
+            out.writeObject(message);
+            out.flush();
+            return true;
+        } catch (IOException e) {
+            System.out.println(e.getMessage() + " : " + e.getCause());
+            return false;
+        }
+    }
 
     public void setUserName(String name) {
         this.name = name;

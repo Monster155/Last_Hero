@@ -1,4 +1,4 @@
-package ru.itlab.lasthero;
+package ru.itlab.lasthero.GameServer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
+import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
 
 public class Controller extends Actor {
 

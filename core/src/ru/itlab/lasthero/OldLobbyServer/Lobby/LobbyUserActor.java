@@ -1,4 +1,4 @@
-package ru.itlab.lasthero.Lobby;
+package ru.itlab.lasthero.OldLobbyServer.Lobby;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 
-import ru.itlab.lasthero.GamePreferences;
+import ru.itlab.lasthero.GameServer.GamePreferences;
 
 public class LobbyUserActor extends Actor {
 
-    private OtherUser otherUser;
+    private ru.itlab.lasthero.OldLobbyServer.Lobby.OtherUser otherUser;
     private BitmapFont font;
     private GlyphLayout glyphName, glyphIP;
 

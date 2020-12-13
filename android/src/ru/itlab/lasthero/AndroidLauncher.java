@@ -4,7 +4,8 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import ru.itlab.lasthero.MainActivity;
+
+import ru.itlab.lasthero.GameServer.Controller;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

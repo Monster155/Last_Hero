@@ -1,4 +1,4 @@
-package ru.itlab.lasthero.NewLobby;
+package ru.itlab.lasthero.OldLobbyServer.NewLobby;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -17,13 +17,12 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import ru.itlab.lasthero.MainActivity;
 import ru.itlab.lasthero.Protocol;
 
-import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
+import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
 
 public class LobbyListScreen implements Screen {
 
@@ -32,7 +31,7 @@ public class LobbyListScreen implements Screen {
     private ScrollPane scrollPane;
     private VerticalGroup group;
     private TextField textField;
-    private User user;
+    private ru.itlab.lasthero.OldLobbyServer.NewLobby.User user;
     private HashMap<Integer, Room> rooms;
 
     private OrthographicCamera camera;

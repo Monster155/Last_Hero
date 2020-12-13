@@ -1,4 +1,4 @@
-package ru.itlab.lasthero.Lobby;
+package ru.itlab.lasthero.OldLobbyServer.Lobby;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,10 +10,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import ru.itlab.lasthero.MainActivity;
-import ru.itlab.lasthero.NewLobby.Room;
-import ru.itlab.lasthero.NewLobby.User;
+import ru.itlab.lasthero.OldLobbyServer.NewLobby.Room;
+import ru.itlab.lasthero.OldLobbyServer.NewLobby.User;
 
-import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
+import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
 
 public class LobbyScreen implements Screen {
 
@@ -21,7 +21,7 @@ public class LobbyScreen implements Screen {
 
     private User user;
     private Room room;
-    private LobbyInfoActor lobbyInfoActor;
+    private ru.itlab.lasthero.OldLobbyServer.Lobby.LobbyInfoActor lobbyInfoActor;
 
     private OrthographicCamera camera;
     private Viewport viewport;

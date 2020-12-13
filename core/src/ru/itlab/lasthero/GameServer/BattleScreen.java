@@ -1,18 +1,21 @@
-package ru.itlab.lasthero;
+package ru.itlab.lasthero.GameServer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import ru.itlab.lasthero.Player.Player;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
+import ru.itlab.lasthero.GameServer.Player.OtherUser;
+import ru.itlab.lasthero.GameServer.Player.Player;
+
+import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
 
 public class BattleScreen implements Screen {
 
@@ -23,6 +26,8 @@ public class BattleScreen implements Screen {
     private Stage stage;
     private Player player;
     private Controller controller;
+    private Connection connection;
+    private OtherUsersController otherUsersController;
 
     public BattleScreen(Controller.ModuleID moduleID) {
         controller = new Controller(moduleID);
@@ -30,6 +35,7 @@ public class BattleScreen implements Screen {
 
     @Override
     public void show() {
+        //TODO remove this
         testObjectTexture = new Texture(Gdx.files.internal("top-down-shooter-1/background/door.gif"));
 
         camera = new OrthographicCamera();
@@ -37,15 +43,17 @@ public class BattleScreen implements Screen {
         viewport = new ExtendViewport(BASE_SCREEN_SIZE.x, BASE_SCREEN_SIZE.y, camera); // change this to your needed viewport
         stage = new Stage(viewport);
 
-        player = new Player(new Vector2(20, 20), camera);
+        //TODO set loading screen before server sends coordinates
+        player = new Player(camera);
         stage.addActor(player);
 
         stage.addActor(controller);
         Gdx.input.setInputProcessor(stage);
-//        camera.position.set(0, 0, camera.position.z);
-//        camera.update();
-        Connection connection = new Connection(player);
-        connection.start();
+
+//        otherUsers = new HashMap<>();
+//        otherUsersToUpdate = new ArrayList<>();
+//        connection = new Connection(player, otherUsersToUpdate);
+//        connection.start();
     }
 
     @Override
@@ -53,11 +61,15 @@ public class BattleScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        updateOtherPlayers();
+
         stage.act();
         stage.draw();
         stage.getBatch().begin();
         stage.getBatch().draw(testObjectTexture, 0, 0, 20, 20);
         stage.getBatch().end();
+
+        connection.send();
     }
 
     @Override
@@ -83,5 +95,16 @@ public class BattleScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    private void updateOtherPlayers() {
+//        if (otherUsersToUpdate.size() < 1) return;
+//        boolean isNew = otherUsersToUpdate.get(0).getKey();
+//        OtherUser user = otherUsersToUpdate.remove(0).getValue();
+//        if (isNew) {
+//            otherUsers.put(user.getIdInConnectedRoom(), user);
+//        } else {
+//            otherUsers.remove(user.getIdInConnectedRoom()).disconnect();
+//        }
     }
 }

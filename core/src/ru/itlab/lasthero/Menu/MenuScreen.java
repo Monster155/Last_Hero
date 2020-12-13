@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -22,31 +23,37 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-import ru.itlab.lasthero.LoadingScreen;
+import ru.itlab.lasthero.LobbyServer.ServerSide.Connector;
 import ru.itlab.lasthero.MainActivity;
 
-import static ru.itlab.lasthero.GamePreferences.BASE_SCREEN_SIZE;
+import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
 
 public class MenuScreen implements Screen {
+
+    private final MainActivity ma;
 
     private OrthographicCamera camera;
     private ExtendViewport viewport;
     private Stage stage;
 
+    private Dialog dialog;
     private Vector2 btnSize;
-    private boolean hasNoConnection;
+    private boolean hasConnection;
     private BitmapFont font;
-
-    private MainActivity ma;
-    private LoadingScreen loadingScreen;
 
     public MenuScreen(MainActivity ma) {
         this.ma = ma;
-        loadingScreen = new LoadingScreen(ma, ma.lobbyScreen);
     }
 
     @Override
     public void show() {
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                setHasConnection(Connector.here.connect());
+            }
+        });
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, BASE_SCREEN_SIZE.x, BASE_SCREEN_SIZE.y);
         viewport = new ExtendViewport(BASE_SCREEN_SIZE.x, BASE_SCREEN_SIZE.y, camera); // change this to your needed viewport
@@ -54,50 +61,14 @@ public class MenuScreen implements Screen {
 
         font = new BitmapFont(Gdx.files.internal("RuEn.fnt"));
 
-        btnSize = new Vector2(300, 100);
-        Button startBtn = new Button(
-                new NinePatchDrawable(
-                        getScaledNinePatch(
-                                new Texture(Gdx.files.internal("UI/BtnImg.png")),
-                                2, 2, 2, 3)));
-        startBtn.setBounds((BASE_SCREEN_SIZE.x - btnSize.x) / 2, BASE_SCREEN_SIZE.y / 2, btnSize.x, btnSize.y);
-        startBtn.addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ma.setScreen(ma.lobbyListScreen);
-                //TODO check this (was loadingScreen)
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-        Label startLabel = new Label("Start", new Label.LabelStyle(font, Color.WHITE));
-        startBtn.addActor(startLabel);
-        startLabel.setPosition((startBtn.getWidth() - startLabel.getWidth()) / 2, (startBtn.getHeight() - startLabel.getHeight()) / 2);
+        createButtons();
 
-        Button settingsBtn = new Button(
-                new NinePatchDrawable(
-                        getScaledNinePatch(
-                                new Texture(Gdx.files.internal("UI/BtnImg.png")),
-                                2, 2, 2, 3)));
-        settingsBtn.addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        dialog = createDialog();
+        stage.addActor(dialog);
+        dialog.hide(Actions.visible(false));
 
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-        settingsBtn.setBounds((BASE_SCREEN_SIZE.x - btnSize.x) / 2, BASE_SCREEN_SIZE.y / 2 - btnSize.y - 10, btnSize.x, btnSize.y);
-        Label settingsLabel = new Label("Settings", new Label.LabelStyle(font, Color.WHITE));
-        settingsBtn.addActor(settingsLabel);
-        settingsLabel.setPosition((settingsBtn.getWidth() - settingsLabel.getWidth()) / 2, (settingsBtn.getHeight() - settingsLabel.getHeight()) / 2);
-
-        stage.addActor(startBtn);
-        stage.addActor(settingsBtn);
-
-        if (hasNoConnection) {
-            Dialog dialog = createDialog();
-            stage.addActor(dialog);
-        }
         Gdx.input.setInputProcessor(stage);
+        stage.setDebugAll(true);
     }
 
     @Override
@@ -126,12 +97,16 @@ public class MenuScreen implements Screen {
 
     @Override
     public void hide() {
-        dispose();
     }
 
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public void setHasConnection(boolean hasConnection) {
+        this.hasConnection = hasConnection;
+        if (!hasConnection) dialog.show(stage);
     }
 
     private NinePatch getScaledNinePatch(Texture texture, int left, int right, int top, int bottom) {
@@ -141,10 +116,6 @@ public class MenuScreen implements Screen {
         float scale = scaleX > scaleY ? scaleY : scaleX;
         ninePatch.scale(scale, scale);
         return ninePatch;
-    }
-
-    public void setHasNoConnection(boolean hasNoConnection) {
-        this.hasNoConnection = hasNoConnection;
     }
 
     private Dialog createDialog() {
@@ -169,5 +140,46 @@ public class MenuScreen implements Screen {
         dialog.text(infoLabel);
         dialog.getButtonTable().padBottom(10);
         return dialog;
+    }
+
+    private void createButtons() {
+        btnSize = new Vector2(300, 100);
+        // creating "Start" button
+        Button startBtn = new Button(new NinePatchDrawable(getScaledNinePatch(
+                new Texture(Gdx.files.internal("UI/BtnImg.png")), 2, 2, 2, 2)));
+        startBtn.setBounds((BASE_SCREEN_SIZE.x - btnSize.x) / 2, BASE_SCREEN_SIZE.y / 2, btnSize.x, btnSize.y);
+        startBtn.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (!hasConnection) dialog.show(stage);
+                else ma.setScreen(ma.lobbyListScreen);
+
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        createLabel(startBtn, "Start");
+
+        // creating "Settings" button
+        Button settingsBtn = new Button(new NinePatchDrawable(getScaledNinePatch(
+                new Texture(Gdx.files.internal("UI/BtnImg.png")), 2, 2, 2, 3)));
+        settingsBtn.setBounds((BASE_SCREEN_SIZE.x - btnSize.x) / 2, BASE_SCREEN_SIZE.y / 2 - btnSize.y - 10, btnSize.x, btnSize.y);
+        settingsBtn.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        createLabel(settingsBtn, "Settings");
+
+        stage.addActor(startBtn);
+        stage.addActor(settingsBtn);
+    }
+
+    private void createLabel(Button parent, String text) {
+        Label label = new Label(text, new Label.LabelStyle(font, Color.WHITE));
+        parent.addActor(label);
+        label.setAlignment(Align.center);
+        label.setFillParent(true);
     }
 }

@@ -1,4 +1,4 @@
-package ru.itlab.lasthero.Lobby;
+package ru.itlab.lasthero.OldLobbyServer.Lobby;
 
 import ru.itlab.lasthero.Protocol;
 
@@ -28,4 +28,5 @@ public class OtherUser {
     public int getIdInConnectedRoom() {
         return idInConnectedRoom;
     }
+
 }

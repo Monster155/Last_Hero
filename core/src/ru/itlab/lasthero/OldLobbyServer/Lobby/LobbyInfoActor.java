@@ -1,4 +1,4 @@
-package ru.itlab.lasthero.NewLobby;
+package ru.itlab.lasthero.OldLobbyServer.Lobby;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,24 +6,21 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import ru.itlab.lasthero.MainActivity;
+import ru.itlab.lasthero.OldLobbyServer.NewLobby.Room;
 
-public class RoomActor extends Actor {
+import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
 
-    private final MainActivity ma;
+public class LobbyInfoActor extends Actor {
+
     private Room room;
     private Texture back;
     private BitmapFont fontMain, fontSmall;
     private GlyphLayout glyphName, glyphPlayersCount, glyphIP;
 
-    public RoomActor(final Room room, int count, final MainActivity ma, final User user, final TextField textField) {
+    public LobbyInfoActor(Room room) {
         this.room = room;
-        this.ma = ma;
-        setBounds(20, 110 * count, 600, 100);
+        setBounds(0, BASE_SCREEN_SIZE.y - 100, BASE_SCREEN_SIZE.x, 100);
         back = new Texture(Gdx.files.internal("UI/TF_Selector.png"));
         fontMain = new BitmapFont(Gdx.files.internal("RuEn.fnt"));
         glyphName = new GlyphLayout(fontMain, room.getName());
@@ -31,17 +28,6 @@ public class RoomActor extends Actor {
         fontSmall = new BitmapFont(Gdx.files.internal("RuEn.fnt"));
         fontSmall.getData().setScale(0.6f);
         glyphIP = new GlyphLayout(fontSmall, room.getIp());
-
-        addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                String name = textField.getText();
-                user.setUserName(name.equals("") ? "Player" : name);
-                ma.lobbyScreen.init(user, room);
-                ma.setScreen(ma.lobbyScreen);
-                return true;
-            }
-        });
     }
 
     @Override

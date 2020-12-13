@@ -1,8 +1,8 @@
-package ru.itlab.lasthero.NewLobby;
+package ru.itlab.lasthero.OldLobbyServer.NewLobby;
 
 import java.util.HashMap;
 
-import ru.itlab.lasthero.Lobby.OtherUser;
+import ru.itlab.lasthero.OldLobbyServer.Lobby.OtherUser;
 import ru.itlab.lasthero.Protocol;
 
 public class Room {

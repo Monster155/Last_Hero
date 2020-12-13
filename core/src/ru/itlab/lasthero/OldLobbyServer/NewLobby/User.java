@@ -1,4 +1,4 @@
-package ru.itlab.lasthero.NewLobby;
+package ru.itlab.lasthero.OldLobbyServer.NewLobby;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

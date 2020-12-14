@@ -82,6 +82,8 @@ public class User extends Thread {
             connectedRoom = rooms.get(id);
             connectedRoom.showUsers(this);
             System.out.println("User with id " + userId + " connected to room");
+            if (connectedRoom.getUsersCount() == connectedRoom.getMAX_COUNT_OF_USERS())
+                connectedRoom.prepareToStart();
         } else {
             sendMessage("04" + "-1");
         }

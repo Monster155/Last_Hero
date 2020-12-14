@@ -9,13 +9,17 @@ public class RoomController extends Thread {
     private ArrayList<User> users;
     private String serverIP;
     private ArrayList<Boolean> usedIDs;
+    private ArrayList<Integer> roomsIdToRemove;
 
-    public RoomController(HashMap<Integer, Room> rooms, ArrayList<User> users, String serverIP) {
+    public RoomController(HashMap<Integer, Room> rooms, ArrayList<User> users, String serverIP, int createRooms) {
         this.rooms = rooms;
         this.users = users;
         this.serverIP = serverIP;
         usedIDs = new ArrayList<>();
-        usedIDs.add(true);
+        roomsIdToRemove = new ArrayList<>();
+        for (int i = 0; i < createRooms; i++) {
+            usedIDs.add(true);
+        }
         start();
     }
 
@@ -25,11 +29,16 @@ public class RoomController extends Thread {
             boolean isFilled = true;
             for (Room r : rooms.values()) {
                 if (r.isInGame()) {
-                    rooms.remove(r.getId()).removeRoom();
+                    roomsIdToRemove.add(r.getId());
                 }
                 if (r.getUsersCount() < r.getMAX_COUNT_OF_USERS()) {
                     isFilled = false;
                 }
+            }
+            if (roomsIdToRemove.size() > 0) {
+                int id = roomsIdToRemove.remove(0);
+                rooms.remove(id).removeRoom();
+                usedIDs.set(id, false);
             }
             if (isFilled) {
                 int freeID = -1;

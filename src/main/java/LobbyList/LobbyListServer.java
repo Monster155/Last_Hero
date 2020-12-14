@@ -16,10 +16,11 @@ public class LobbyListServer {
         try {
             System.out.println("Lobby server starts...");
             ServerSocket server = new ServerSocket(Protocol.PORT);
-            for (int i = 1; i <= 3; i++) {
+            int createRooms = 3;
+            for (int i = 1; i <= createRooms; i++) {
                 rooms.put(i, new Room("Room " + i, server.getInetAddress().getHostAddress(), i, users));
             }
-            roomController = new RoomController(rooms, users, server.getInetAddress().getHostAddress());
+            roomController = new RoomController(rooms, users, server.getInetAddress().getHostAddress(), createRooms);
             while (true) {
                 User user = new User(server.accept(), rooms, users);
                 users.add(user);

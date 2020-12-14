@@ -74,9 +74,6 @@ public class Room {
         users.remove(user);
         update(user, true);
         connectedUsers.put(user.getUserId(), user);
-        if (usersCount == MAX_COUNT_OF_USERS) {
-            prepareToStart();
-        }
         return true;
     }
 
@@ -134,6 +131,7 @@ public class Room {
 
     public void prepareToStart() {
         isInGame = true;
+        System.out.println("Prepare");
         for (User u : connectedUsers.values()) {
             u.prepareToStart(TIME_BEFORE_START);
         }
@@ -147,12 +145,14 @@ public class Room {
 
     private void startGame() {
         if (!isInGame) return;
+        System.out.println("Start");
         for (User u : connectedUsers.values()) {
             u.startGame();
         }
     }
 
     private void stopPrepareToStart() {
+        System.out.println("Stop prepare");
         timer.cancel();
         for (User u : connectedUsers.values()) {
             u.prepareToStart(-1);

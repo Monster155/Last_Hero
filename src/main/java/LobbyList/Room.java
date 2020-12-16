@@ -1,6 +1,8 @@
 package LobbyList;
 
 
+import GameServer.GameRoom;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -18,6 +20,7 @@ public class Room {
     private ArrayList<Boolean> usedIds;
     private ArrayList<User> users;
     private Timer timer;
+    private GameRoom gameRoom;
 
     public Room(String name, String ip, int id, ArrayList<User> users) {
         this.name = name;
@@ -145,6 +148,7 @@ public class Room {
 
     private void startGame() {
         if (!isInGame) return;
+        gameRoom = new GameRoom(connectedUsers);
         System.out.println("Start");
         for (User u : connectedUsers.values()) {
             u.startGame();

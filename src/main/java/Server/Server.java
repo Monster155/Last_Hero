@@ -19,7 +19,7 @@ public class Server {
                 System.out.println("We have " + users.size() + " users \n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage() + " : " + e.getCause());
         } finally {
             System.out.println("Server. Server was closed..");
         }

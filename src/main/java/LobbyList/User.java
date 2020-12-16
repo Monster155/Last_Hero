@@ -164,4 +164,12 @@ public class User extends Thread {
     public void setUserName(String name) {
         this.userName = name;
     }
+
+    public ObjectInputStream getIn() {
+        return in;
+    }
+
+    public ObjectOutputStream getOut() {
+        return out;
+    }
 }

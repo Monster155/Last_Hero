@@ -12,6 +12,7 @@ public class LobbyListServer {
     public static void main(String[] args) {
         HashMap<Integer, Room> rooms = new HashMap<>();
         ArrayList<User> users = new ArrayList<>();
+        //ShowLobbyList showLobbyList = new ShowLobbyList(rooms);
         RoomController roomController;
         try {
             System.out.println("Lobby server starts...");

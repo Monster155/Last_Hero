@@ -163,4 +163,7 @@ public class Room {
         }
     }
 
+    public HashMap<Integer, User> getConnectedUsers() {
+        return connectedUsers;
+    }
 }

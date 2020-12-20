@@ -10,12 +10,14 @@ public class RoomController extends Thread {
     private String serverIP;
     private ArrayList<Boolean> usedIDs;
     private ArrayList<Integer> roomsIdToRemove;
+    private FXRoomController fxRoomController;
 
     public RoomController(HashMap<Integer, Room> rooms, ArrayList<User> users, String serverIP, int createRooms) {
         this.rooms = rooms;
         this.users = users;
         this.serverIP = serverIP;
         usedIDs = new ArrayList<>();
+        fxRoomController = new FXRoomController();
         roomsIdToRemove = new ArrayList<>();
         for (int i = 0; i < createRooms; i++) {
             usedIDs.add(true);
@@ -38,6 +40,7 @@ public class RoomController extends Thread {
             }
             if (roomsIdToRemove.size() > 0) {
                 int id = roomsIdToRemove.remove(0);
+                fxRoomController.removeRoom(rooms.get(id));
                 rooms.remove(id).removeRoom();
                 usedIDs.set(id, false);
             }
@@ -57,6 +60,7 @@ public class RoomController extends Thread {
                     usedIDs.add(true);
                 }
                 rooms.put(freeID, new Room("Room " + (freeID + 1), serverIP, freeID, users));
+                fxRoomController.addRoom(rooms.get(freeID));
             }
         }
     }

@@ -10,11 +10,17 @@ public class FXRoomController {
         return listOfRooms;
     }
 
+    public void setListOfRooms(HashMap<Integer, Room> rooms) {
+        for (int i = 0; i < rooms.size(); i++) {
+            listOfRooms.add(i, rooms.get(i));
+        }
+    }
+
     public void addRoom(Room room) {
         listOfRooms.add(room);
     }
 
-    public void removeLobby(Room room) {
+    public void removeRoom(Room room) {
         listOfRooms.remove(room);
     }
 
@@ -24,11 +30,5 @@ public class FXRoomController {
 
     public Room getRoom(int i) {
         return listOfRooms.get(i);
-    }
-
-    public void setListOfRooms(HashMap<Integer, Room> rooms) {
-        for (int i = 0; i < rooms.size(); i++) {
-            listOfRooms.add(i, rooms.get(i+1));
-        }
     }
 }

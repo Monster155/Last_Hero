@@ -11,16 +11,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ShowLobbyList implements Runnable {
-    private static HashMap<Integer, Room> rooms;
     private static FXRoomController roomController;
 
-    public ShowLobbyList(HashMap<Integer, Room> rooms) {
-        this.rooms = rooms;
-        roomController = new FXRoomController();
-        roomController.setListOfRooms(rooms);
+    public ShowLobbyList(FXRoomController roomController) {
+        this.roomController = roomController;
     }
 
     @Override
@@ -39,9 +37,8 @@ public class ShowLobbyList implements Runnable {
             Button refreshButton = new Button("refresh");
             vBox.getChildren().add(refreshButton);
             refreshButton.setOnMousePressed(event -> {
-                if (vBox.getChildren().size() > 1) {
-                    vBox.getChildren().remove(1, roomController.size() + 1);
-                }
+                vBox.getChildren().remove(1, vBox.getChildren().size());
+                System.out.println("FX. We have " + roomController.size() + " rooms");
                 for (int i = 0; i < roomController.size(); i++) {
                     Text nameText = new Text();
                     nameText.setText(roomController.getRoom(i).getName());
@@ -49,7 +46,7 @@ public class ShowLobbyList implements Runnable {
 
                     Text countOfUsersText = new Text();
                     countOfUsersText.setText(roomController.getRoom(i).getUsersCount() + "/" + roomController.getRoom(i).getMAX_COUNT_OF_USERS());
-                    countOfUsersText.setFont(Font.font(30));
+                    countOfUsersText.setFont(Font.font(40));
 
                     Text gameStatusText = new Text();
                     if (roomController.getRoom(i).isInGame())

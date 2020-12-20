@@ -13,17 +13,19 @@ public class LobbyListServer {
         HashMap<Integer, Room> rooms = new HashMap<>();
         ArrayList<User> users = new ArrayList<>();
         RoomController roomController;
+        FXRoomController fxRoomController = new FXRoomController();
         try {
             System.out.println("Lobby server starts...");
             ServerSocket server = new ServerSocket(Protocol.PORT);
-            int createRooms = 3;
+            int createRooms = 1;
             for (int i = 0; i < createRooms; i++) {
                 rooms.put(i, new Room("Room " + (i + 1), server.getInetAddress().getHostAddress(), i, users));
+                fxRoomController.addRoom(i, rooms.get(i));
             }
-            ShowLobbyList showLobbyList = new ShowLobbyList(rooms);
+            roomController = new RoomController(rooms, users, server.getInetAddress().getHostAddress(), createRooms, fxRoomController);
+            ShowLobbyList showLobbyList = new ShowLobbyList(fxRoomController);
             new Thread(showLobbyList).start();
             while (true) {
-                roomController = new RoomController(rooms, users, server.getInetAddress().getHostAddress(), createRooms);
                 User user = new User(server.accept(), rooms, users);
                 users.add(user);
                 System.out.println("Users count: " + users.size());

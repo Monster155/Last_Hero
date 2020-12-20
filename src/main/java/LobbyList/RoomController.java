@@ -12,12 +12,12 @@ public class RoomController extends Thread {
     private ArrayList<Integer> roomsIdToRemove;
     private FXRoomController fxRoomController;
 
-    public RoomController(HashMap<Integer, Room> rooms, ArrayList<User> users, String serverIP, int createRooms) {
+    public RoomController(HashMap<Integer, Room> rooms, ArrayList<User> users, String serverIP, int createRooms, FXRoomController fxRoomController) {
         this.rooms = rooms;
         this.users = users;
         this.serverIP = serverIP;
         usedIDs = new ArrayList<>();
-        fxRoomController = new FXRoomController();
+        this.fxRoomController = fxRoomController;
         roomsIdToRemove = new ArrayList<>();
         for (int i = 0; i < createRooms; i++) {
             usedIDs.add(true);
@@ -32,18 +32,17 @@ public class RoomController extends Thread {
             float usersCount = 0;
             float maxUsersCount = 0;
             for (Room r : rooms.values()) {
-                if (r.isInGame()) {
+                if (r.isInGame() || r.isPrepared()) {
                     roomsIdToRemove.add(r.getId());
                 }
                 usersCount += r.getUsersCount();
                 maxUsersCount += r.getMAX_COUNT_OF_USERS();
             }
-            if (roomsIdToRemove.size() > 0) {
-                int id = roomsIdToRemove.remove(0);
-                fxRoomController.removeRoom(rooms.get(id));
+            for(int id : roomsIdToRemove){
                 rooms.remove(id).removeRoom();
                 usedIDs.set(id, false);
             }
+            roomsIdToRemove.clear();
             if (usersCount / maxUsersCount >= filledPercent) {
                 int freeID = -1;
                 for (int i = 0; i < usedIDs.size(); i++) {
@@ -59,8 +58,8 @@ public class RoomController extends Thread {
                     freeID = usedIDs.size();
                     usedIDs.add(true);
                 }
-                rooms.put(freeID, new Room("Room " + (freeID + 1), serverIP, freeID, users));
-                fxRoomController.addRoom(rooms.get(freeID));
+                rooms.put(freeID, new Room("Room " + (fxRoomController.size() + 1), serverIP, freeID, users));
+                fxRoomController.addRoom(fxRoomController.size(), rooms.get(freeID));
             }
         }
     }

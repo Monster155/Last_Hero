@@ -10,14 +10,14 @@ public class FXRoomController {
         return listOfRooms;
     }
 
-    public void setListOfRooms(HashMap<Integer, Room> rooms) {
+    public void setListOfRooms(ArrayList<Room> rooms) {
         for (int i = 0; i < rooms.size(); i++) {
             listOfRooms.add(i, rooms.get(i));
         }
     }
 
-    public void addRoom(Room room) {
-        listOfRooms.add(room);
+    public void addRoom(int id, Room room) {
+        listOfRooms.add(id, room);
     }
 
     public void removeRoom(Room room) {

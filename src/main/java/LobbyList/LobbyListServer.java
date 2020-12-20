@@ -17,7 +17,7 @@ public class LobbyListServer {
         try {
             System.out.println("Lobby server starts...");
             ServerSocket server = new ServerSocket(Protocol.PORT);
-            int createRooms = 1;
+            int createRooms = 3;
             for (int i = 0; i < createRooms; i++) {
                 rooms.put(i, new Room("Room " + (i + 1), server.getInetAddress().getHostAddress(), i, users));
                 fxRoomController.addRoom(i, rooms.get(i));

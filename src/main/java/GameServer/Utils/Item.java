@@ -4,8 +4,8 @@ import Server.Protocol;
 
 public class Item {
     private Vector2 pos;
+    private int itemId;
     private int id;
-    private int posId;
     public static int MAX_ITEMS = 5;
     // 1 - pistol
     // 2 - pistol ammo
@@ -13,22 +13,22 @@ public class Item {
     // 4 - rifle ammo
     // 5 - bandage
 
-    public Item(Vector2 pos, int id, int posId) {
+    public Item(Vector2 pos, int itemId, int id) {
         this.pos = pos;
+        this.itemId = itemId;
         this.id = id;
-        this.posId = posId;
     }
 
     public Vector2 getPos() {
         return pos;
     }
 
-    public int getId() {
-        return id;
+    public int getItemId() {
+        return itemId;
     }
 
     @Override
     public String toString() {
-        return pos.getX() + Protocol.DIVIDER + pos.getY() + Protocol.DIVIDER + getId() + Protocol.DIVIDER + posId;
+        return pos.getX() + Protocol.DIVIDER + pos.getY() + Protocol.DIVIDER + getItemId() + Protocol.DIVIDER + id;
     }
 }

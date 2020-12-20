@@ -23,6 +23,7 @@ public class Room {
     private Timer timer;
     private GameRoom gameRoom;
 
+
     public Room(String name, String ip, int id, ArrayList<User> users) {
         this.name = name;
         this.ip = ip;

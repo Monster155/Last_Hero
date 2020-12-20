@@ -40,7 +40,7 @@ public class ShowLobbyList implements Runnable {
             vBox.getChildren().add(refreshButton);
             refreshButton.setOnMousePressed(event -> {
                 if (vBox.getChildren().size() > 1) {
-                    vBox.getChildren().remove(1, roomController.size()+1);
+                    vBox.getChildren().remove(1, roomController.size() + 1);
                 }
                 for (int i = 0; i < roomController.size(); i++) {
                     Text nameText = new Text();
@@ -48,17 +48,25 @@ public class ShowLobbyList implements Runnable {
                     nameText.setFont(Font.font(40));
 
                     Text countOfUsersText = new Text();
-                    countOfUsersText.setText(roomController.getRoom(i).getUsersCount() + "/10");
+                    countOfUsersText.setText(roomController.getRoom(i).getUsersCount() + "/" + roomController.getRoom(i).getMAX_COUNT_OF_USERS());
                     countOfUsersText.setFont(Font.font(30));
 
+                    Text gameStatusText = new Text();
+                    if (roomController.getRoom(i).isInGame())
+                        gameStatusText.setText("Room in Game");
+                    else
+                        gameStatusText.setText("Room not in game");
+                    gameStatusText.setFont(Font.font(36));
+                    gameStatusText.setUnderline(true);
+
                     VBox boxUsers = new VBox(20);
-                    for (User u: roomController.getRoom(i).getConnectedUsers().values()) {
+                    for (User u : roomController.getRoom(i).getConnectedUsers().values()) {
                         Text userNameText = new Text();
                         userNameText.setFont(Font.font(20));
                         userNameText.setText(u.getUserName());
                         boxUsers.getChildren().add(userNameText);
                     }
-                    HBox hBox = new HBox(100, nameText, countOfUsersText, boxUsers);
+                    HBox hBox = new HBox(100, nameText, countOfUsersText, boxUsers, gameStatusText);
                     hBox.setStyle("-fx-border-color: black");
                     hBox.setAlignment(Pos.TOP_CENTER);
                     hBox.setFillHeight(true);
@@ -67,7 +75,7 @@ public class ShowLobbyList implements Runnable {
                 }
             });
             scrollPane.setContent(vBox);
-            primaryStage.setScene(new Scene(scrollPane, 700,400));
+            primaryStage.setScene(new Scene(scrollPane, 800, 400));
             primaryStage.show();
         }
     }

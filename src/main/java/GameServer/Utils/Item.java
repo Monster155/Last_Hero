@@ -3,10 +3,10 @@ package GameServer.Utils;
 import Server.Protocol;
 
 public class Item {
+    public static int MAX_ITEMS = 5;
     private Vector2 pos;
     private int itemId;
     private int id;
-    public static int MAX_ITEMS = 5;
     // 1 - pistol
     // 2 - pistol ammo
     // 3 - rifle
@@ -14,6 +14,7 @@ public class Item {
     // 5 - bandage
 
     public Item(Vector2 pos, int itemId, int id) {
+        pos.setY(1700 - pos.getY());
         this.pos = pos;
         this.itemId = itemId;
         this.id = id;

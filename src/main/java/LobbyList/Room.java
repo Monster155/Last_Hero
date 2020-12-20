@@ -17,6 +17,7 @@ public class Room {
     private String name;
     private String ip;
     private boolean isInGame;
+    private boolean isPrepared;
     private ArrayList<Boolean> usedIds;
     private ArrayList<User> users;
     private Timer timer;
@@ -41,6 +42,10 @@ public class Room {
 
     public boolean isInGame() {
         return isInGame;
+    }
+
+    public boolean isPrepared() {
+        return isPrepared;
     }
 
     public int getId() {
@@ -92,8 +97,8 @@ public class Room {
         connectedUsers.remove(user.getUserId());
         users.add(user);
         update(user, false);
-        if (isInGame) {
-            isInGame = false;
+        if (isPrepared) {
+            isPrepared = false;
             stopPrepareToStart();
         }
         return true;
@@ -133,11 +138,12 @@ public class Room {
     }
 
     public void prepareToStart() {
-        isInGame = true;
+        isPrepared = true;
         System.out.println("Prepare");
         for (User u : connectedUsers.values()) {
             u.prepareToStart(TIME_BEFORE_START);
         }
+        timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -147,16 +153,18 @@ public class Room {
     }
 
     private void startGame() {
-        if (!isInGame) return;
-        gameRoom = new GameRoom(connectedUsers);
+        if (!isPrepared) return;
+        isInGame = true;
         System.out.println("Start");
         for (User u : connectedUsers.values()) {
             u.startGame();
         }
+        gameRoom = new GameRoom(connectedUsers);
     }
 
     private void stopPrepareToStart() {
         System.out.println("Stop prepare");
+        isPrepared = false;
         timer.cancel();
         for (User u : connectedUsers.values()) {
             u.prepareToStart(-1);

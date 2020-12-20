@@ -23,7 +23,7 @@ public class GameRoom {
         sender = new Sender(this.users);
         for (User u : this.users.values()) {
             Vector2 pos = getPosition();
-            u.setStats(pos.getX(), pos.getY(), 100, items);
+            u.setStats(pos, 100, items);
         }
     }
 

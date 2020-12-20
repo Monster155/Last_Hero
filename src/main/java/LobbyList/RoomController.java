@@ -26,33 +26,37 @@ public class RoomController extends Thread {
     @Override
     public void run() {
         while (true) {
-            boolean isFilled = true;
+            float filledPercent = 0.9f;
+            float usersCount = 0;
+            float maxUsersCount = 0;
             for (Room r : rooms.values()) {
                 if (r.isInGame()) {
                     roomsIdToRemove.add(r.getId());
                 }
-                if (r.getUsersCount() < r.getMAX_COUNT_OF_USERS()) {
-                    isFilled = false;
-                }
+                usersCount += r.getUsersCount();
+                maxUsersCount += r.getMAX_COUNT_OF_USERS();
             }
             if (roomsIdToRemove.size() > 0) {
                 int id = roomsIdToRemove.remove(0);
                 rooms.remove(id).removeRoom();
                 usedIDs.set(id, false);
             }
-            if (isFilled) {
+            if (usersCount / maxUsersCount >= filledPercent) {
                 int freeID = -1;
+                for (int i = 0; i < usedIDs.size(); i++) {
+                }
                 for (int i = 0; i < usedIDs.size(); i++) {
                     if (!usedIDs.get(i)) {
                         freeID = i;
                         usedIDs.set(i, true);
+                        break;
                     }
                 }
                 if (freeID == -1) {
                     freeID = usedIDs.size();
                     usedIDs.add(true);
                 }
-                rooms.put(freeID, new Room("Room " + (rooms.size() + 1), serverIP, freeID, users));
+                rooms.put(freeID, new Room("Room " + (freeID + 1), serverIP, freeID, users));
             }
         }
     }

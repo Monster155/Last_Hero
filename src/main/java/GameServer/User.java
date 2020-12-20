@@ -1,6 +1,7 @@
 package GameServer;
 
 import GameServer.Utils.Item;
+import GameServer.Utils.Vector2;
 import Server.Protocol;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class User extends Thread {
     private String userName;
     private String ip;
 
-    private float posX, posY;
+    private Vector2 pos;
     private int hp;
 
     public User(LobbyList.User user) {
@@ -116,14 +117,13 @@ public class User extends Thread {
         }
     }
 
-    public void setStats(float posX, float posY, int hp, ArrayList<Item> items) {
-        this.posX = posX;
-        this.posY = posY;
+    public void setStats(Vector2 pos, int hp, ArrayList<Item> items) {
+        this.pos = pos;
         this.hp = hp;
         // 01 - self
         // 02 - items
         StringBuilder sb = new StringBuilder();
-        sb.append(posX).append(Protocol.DIVIDER).append(posY).append(Protocol.DIVIDER).append(hp).append(Protocol.DIVIDER);
+        sb.append(userId).append(Protocol.DIVIDER).append(pos.getX()).append(Protocol.DIVIDER).append(pos.getY()).append(Protocol.DIVIDER).append(hp).append(Protocol.DIVIDER);
         for (Item item : items) {
             sb.append(item.toString()).append(Protocol.DIVIDER);
         }

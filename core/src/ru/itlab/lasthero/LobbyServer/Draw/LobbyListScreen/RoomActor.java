@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import ru.itlab.lasthero.LobbyServer.ServerSide.Connector;
-import ru.itlab.lasthero.LobbyServer.ServerSide.Room;
+import ru.itlab.lasthero.ServerSide.Connector;
+import ru.itlab.lasthero.ServerSide.Room;
 
 public class RoomActor extends Actor {
 

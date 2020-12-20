@@ -4,18 +4,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import java.util.ArrayList;
 
-import ru.itlab.lasthero.LobbyServer.ServerSide.Room;
-import ru.itlab.lasthero.LobbyServer.ServerSide.User;
+import ru.itlab.lasthero.ServerSide.Room;
+import ru.itlab.lasthero.ServerSide.User;
 
-import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
+import static ru.itlab.lasthero.GameServer.Utils.GamePreferences.BASE_SCREEN_SIZE;
 
 public class LobbyScreen implements Screen {
 
@@ -58,6 +65,7 @@ public class LobbyScreen implements Screen {
         stage.addActor(scrollPane);
 
         Gdx.input.setInputProcessor(stage);
+        stage.setDebugAll(true);
         //TODO add button to leave lobby - connector.here.disconnect()
         // change InfoParent to ServerInfo
     }
@@ -104,6 +112,7 @@ public class LobbyScreen implements Screen {
 
     public void addNewUser(User user) {
         users.add(user);
+        room.addUser(user.getUserId(), user);
     }
 
     private void checkNewUsers() {
@@ -125,4 +134,9 @@ public class LobbyScreen implements Screen {
     public void setRoom(Room room) {
         this.room = room;
     }
+
+    public Room getRoom() {
+        return room;
+    }
+
 }

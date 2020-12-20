@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 
-import ru.itlab.lasthero.GameServer.GamePreferences;
-import ru.itlab.lasthero.LobbyServer.ServerSide.User;
+import ru.itlab.lasthero.GameServer.Utils.GamePreferences;
+import ru.itlab.lasthero.ServerSide.User;
 
 public class UserActor extends Actor {
 

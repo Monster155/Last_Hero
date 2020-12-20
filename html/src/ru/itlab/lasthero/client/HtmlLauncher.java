@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 
-import ru.itlab.lasthero.GameServer.Controller;
+import ru.itlab.lasthero.GameServer.Utils.Controller;
 import ru.itlab.lasthero.MainActivity;
 
 public class HtmlLauncher extends GwtApplication {

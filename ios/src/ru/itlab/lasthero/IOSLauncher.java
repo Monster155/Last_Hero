@@ -6,7 +6,7 @@ import org.robovm.apple.uikit.UIApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 
-import ru.itlab.lasthero.GameServer.Controller;
+import ru.itlab.lasthero.GameServer.Utils.Controller;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override

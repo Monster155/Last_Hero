@@ -23,10 +23,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-import ru.itlab.lasthero.LobbyServer.ServerSide.Connector;
+import ru.itlab.lasthero.ServerSide.ConnectionThread;
 import ru.itlab.lasthero.MainActivity;
 
-import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
+import static ru.itlab.lasthero.GameServer.Utils.GamePreferences.BASE_SCREEN_SIZE;
 
 public class MenuScreen implements Screen {
 
@@ -38,8 +38,14 @@ public class MenuScreen implements Screen {
 
     private Dialog dialog;
     private Vector2 btnSize;
-    private boolean hasConnection;
     private BitmapFont font;
+
+    private boolean canDrawLoading;
+    private Sprite loading;
+    private float loadingDegree;
+
+    private ConnectionThread connectionThread;
+    private Label labelDisable, labelEnable;
 
     public MenuScreen(MainActivity ma) {
         this.ma = ma;
@@ -47,12 +53,8 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                setHasConnection(Connector.here.connect());
-            }
-        });
+        connectionThread = new ConnectionThread();
+        canDrawLoading = false;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, BASE_SCREEN_SIZE.x, BASE_SCREEN_SIZE.y);
@@ -62,10 +64,15 @@ public class MenuScreen implements Screen {
         font = new BitmapFont(Gdx.files.internal("RuEn.fnt"));
 
         createButtons();
+        loadingDegree = 0;
+        loading = new Sprite(new Texture(Gdx.files.internal("UI/loading.png")));
+        loading.setBounds(0, (360 - 640) / 2f, 640, 640);
 
         dialog = createDialog();
         stage.addActor(dialog);
-        dialog.hide(Actions.visible(false));
+        dialog.hide(Actions.alpha(0));
+
+        createServerConnectionText();
 
         Gdx.input.setInputProcessor(stage);
         stage.setDebugAll(true);
@@ -78,6 +85,18 @@ public class MenuScreen implements Screen {
 
         stage.act();
         stage.draw();
+
+        setServerConnection(!connectionThread.isConnected());
+
+//        if (canDrawLoading) {
+//            System.out.println("draw");
+//            loadingDegree += delta * 100;
+//            loading.setRotation(loadingDegree);
+//
+//            stage.getBatch().begin();
+//            loading.draw(stage.getBatch());
+//            stage.getBatch().end();
+//        }
     }
 
     @Override
@@ -102,11 +121,6 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-    }
-
-    public void setHasConnection(boolean hasConnection) {
-        this.hasConnection = hasConnection;
-        if (!hasConnection) dialog.show(stage);
     }
 
     private NinePatch getScaledNinePatch(Texture texture, int left, int right, int top, int bottom) {
@@ -139,6 +153,7 @@ public class MenuScreen implements Screen {
         dialog.button(btn);
         dialog.text(infoLabel);
         dialog.getButtonTable().padBottom(10);
+
         return dialog;
     }
 
@@ -151,8 +166,12 @@ public class MenuScreen implements Screen {
         startBtn.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (!hasConnection) dialog.show(stage);
-                else ma.setScreen(ma.lobbyListScreen);
+                if (!connectionThread.isConnected()) {
+                    dialog.show(stage);
+                } else {
+                    connectionThread.interrupt();
+                    ma.setScreen(ma.lobbyListScreen);
+                }
 
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -181,5 +200,21 @@ public class MenuScreen implements Screen {
         parent.addActor(label);
         label.setAlignment(Align.center);
         label.setFillParent(true);
+    }
+
+    private void createServerConnectionText() {
+        labelDisable = new Label("Server disable", new Label.LabelStyle(font, Color.RED));
+        labelDisable.setPosition((BASE_SCREEN_SIZE.x - labelDisable.getWidth()) / 2, BASE_SCREEN_SIZE.y - 60);
+        stage.addActor(labelDisable);
+        labelDisable.setVisible(true);
+        labelEnable = new Label("Server enable", new Label.LabelStyle(font, Color.GREEN));
+        labelEnable.setPosition((BASE_SCREEN_SIZE.x - labelEnable.getWidth()) / 2, BASE_SCREEN_SIZE.y - 60);
+        stage.addActor(labelEnable);
+        labelEnable.setVisible(false);
+    }
+
+    private void setServerConnection(boolean isDisabled) {
+        labelDisable.setVisible(isDisabled);
+        labelEnable.setVisible(!isDisabled);
     }
 }

@@ -3,10 +3,11 @@ package ru.itlab.lasthero;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 
-import ru.itlab.lasthero.GameServer.Controller;
+import ru.itlab.lasthero.GameServer.GameScreen;
+import ru.itlab.lasthero.GameServer.Utils.Controller;
 import ru.itlab.lasthero.LobbyServer.Draw.LobbyListScreen.LobbyListScreen;
 import ru.itlab.lasthero.LobbyServer.Draw.LobbyScreen.LobbyScreen;
-import ru.itlab.lasthero.LobbyServer.ServerSide.Connector;
+import ru.itlab.lasthero.ServerSide.Connector;
 import ru.itlab.lasthero.Menu.MenuScreen;
 
 public class MainActivity extends Game {
@@ -14,6 +15,8 @@ public class MainActivity extends Game {
     public final MenuScreen menuScreen;
     public final LobbyListScreen lobbyListScreen;
     public final LobbyScreen lobbyScreen;
+    public final GameScreen gameScreen;
+
     private boolean changeScreen;
     private Screen screenToChange;
 
@@ -21,6 +24,8 @@ public class MainActivity extends Game {
         menuScreen = new MenuScreen(this);
         lobbyListScreen = new LobbyListScreen();
         lobbyScreen = new LobbyScreen();
+        gameScreen = new GameScreen(moduleID);
+
         Connector.here.init(this);
         changeScreen = false;
     }

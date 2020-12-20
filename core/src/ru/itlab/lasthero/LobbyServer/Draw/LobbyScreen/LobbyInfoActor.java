@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import ru.itlab.lasthero.LobbyServer.ServerSide.Room;
+import ru.itlab.lasthero.ServerSide.Room;
 
-import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
+import static ru.itlab.lasthero.GameServer.Utils.GamePreferences.BASE_SCREEN_SIZE;
 
 public class LobbyInfoActor extends Actor {
 

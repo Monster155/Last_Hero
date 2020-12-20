@@ -3,10 +3,10 @@ package ru.itlab.lasthero.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import ru.itlab.lasthero.GameServer.Controller;
+import ru.itlab.lasthero.GameServer.Utils.Controller;
 import ru.itlab.lasthero.MainActivity;
 
-import static ru.itlab.lasthero.GameServer.GamePreferences.BASE_SCREEN_SIZE;
+import static ru.itlab.lasthero.GameServer.Utils.GamePreferences.BASE_SCREEN_SIZE;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {

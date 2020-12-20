@@ -26,8 +26,8 @@
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
+
     <dependencies>
         <dependency>
             <groupId>javax.xml.ws</groupId>

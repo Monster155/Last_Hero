@@ -39,7 +39,6 @@ public class RoomController extends Thread {
                 maxUsersCount += r.getMAX_COUNT_OF_USERS();
             }
             for (int id : roomsIdToRemove) {
-                fxRoomController.removeRoom(rooms.get(id));
                 rooms.remove(id).removeRoom();
                 usedIDs.set(id, false);
             }

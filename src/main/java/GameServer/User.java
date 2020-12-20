@@ -40,9 +40,10 @@ public class User extends Thread {
 
     @Override
     public void run() {
+        String data;
+        boolean shouldStop = false;
         try {
-            String data;
-            while (true) {
+            while (!shouldStop) {
                 data = (String) in.readObject();
                 int command = Integer.parseInt(data.substring(0, 2));
                 String[] info = data.substring(2).split(Protocol.DIVIDER);
@@ -67,11 +68,16 @@ public class User extends Thread {
                     case 5:
                         hands(info);
                         break;
+                    // player is ready
+                    case 10:
+                        sender.playerIsReady(userId);
+                        break;
+                    case 99:
+                        shouldStop = true;
+                        break;
                 }
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage() + " : " + e.getCause());
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage() + " : " + e.getCause());
         }
     }
@@ -131,7 +137,7 @@ public class User extends Thread {
         sendPersonalMessage(sb.toString());
     }
 
-    public void startGame(HashMap<Integer, User> users) {
+    public void spawnEnemies(HashMap<Integer, User> users) {
         StringBuilder sb = new StringBuilder();
         for (User u : users.values()) {
             if (u != this) {

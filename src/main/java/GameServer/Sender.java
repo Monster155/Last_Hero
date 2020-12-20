@@ -1,5 +1,7 @@
 package GameServer;
 
+import Server.Protocol;
+
 import java.util.HashMap;
 
 public class Sender {
@@ -12,36 +14,47 @@ public class Sender {
     private final String HANDS = "05";
     private final String START_GAME = "10";
     private HashMap<Integer, User> users;
+    private boolean[] readyPlayersCount;
 
     public Sender(HashMap<Integer, User> users) {
+        readyPlayersCount = new boolean[users.size()];
         this.users = users;
         for (User u : users.values()) {
             u.setSender(this);
         }
     }
 
+    public void playerIsReady(int id) {
+        readyPlayersCount[id] = true;
+        for (boolean b : readyPlayersCount) {
+            if (!b) return;
+        }
+        startGame();
+    }
+
     public void sendPositionAndDirection(String message, int senderId) {
-        sendMessage(POS_AND_DIR + message, senderId);
+        sendMessage(POS_AND_DIR + senderId + Protocol.DIVIDER + message, senderId);
     }
 
     public void sendHP(String message, int senderId) {
-        sendMessage(HP + message, senderId);
+        sendMessage(HP + senderId + Protocol.DIVIDER + message, senderId);
     }
 
     public void sendShoot(String message, int senderId) {
-        sendMessage(SHOOT + message, senderId);
+        sendMessage(SHOOT + senderId + Protocol.DIVIDER + message, senderId);
     }
 
     public void sendPick(String message, int senderId) {
-        sendMessage(PICK + message, senderId);
+        sendMessage(PICK + senderId + Protocol.DIVIDER + message, senderId);
     }
 
     public void sendHands(String message, int senderId) {
-        sendMessage(HANDS + message, senderId);
+        sendMessage(HANDS + senderId + Protocol.DIVIDER + message, senderId);
     }
 
     public void startGame() {
         sendMessage(START_GAME, -1);
+        System.out.println("Game started");
     }
 
     private void sendMessage(String message, int senderId) {

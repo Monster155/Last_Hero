@@ -42,9 +42,10 @@ public class User extends Thread {
 
     @Override
     public void run() {
+        String data;
+        boolean shouldStop = false;
         try {
-            String data;
-            while (true) {
+            while (!shouldStop) {
                 data = (String) in.readObject();
                 int command = Integer.parseInt(data.substring(0, 2));
                 String[] info = data.substring(2).split(Protocol.DIVIDER);
@@ -56,6 +57,9 @@ public class User extends Thread {
                     // disconnect from Room
                     case 2:
                         disconnectFromRoom();
+                        break;
+                    case 99:
+                        shouldStop = true;
                         break;
                 }
             }

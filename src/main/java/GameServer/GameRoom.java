@@ -25,12 +25,13 @@ public class GameRoom {
             Vector2 pos = getPosition();
             u.setStats(pos, 100, items);
         }
-        startGame();
+        spawnEnemies();
+        System.out.println("Game created");
     }
 
-    private void startGame(){
+    private void spawnEnemies(){
         for (User u : users.values()) {
-            u.startGame(users);
+            u.spawnEnemies(users);
         }
     }
 

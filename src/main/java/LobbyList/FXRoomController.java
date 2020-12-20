@@ -1,6 +1,7 @@
 package LobbyList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FXRoomController {
     private ArrayList<Room> listOfRooms = new ArrayList<Room>();
@@ -23,5 +24,11 @@ public class FXRoomController {
 
     public Room getRoom(int i) {
         return listOfRooms.get(i);
+    }
+
+    public void setListOfRooms(HashMap<Integer, Room> rooms) {
+        for (int i = 0; i < rooms.values().size(); i++) {
+            listOfRooms.add(i, rooms.get(i));
+        }
     }
 }

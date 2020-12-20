@@ -12,15 +12,17 @@ public class LobbyListServer {
     public static void main(String[] args) {
         HashMap<Integer, Room> rooms = new HashMap<>();
         ArrayList<User> users = new ArrayList<>();
-        //ShowLobbyList showLobbyList = new ShowLobbyList(rooms);
+        ShowLobbyList showLobbyList;
         RoomController roomController;
         try {
             System.out.println("Lobby server starts...");
             ServerSocket server = new ServerSocket(Protocol.PORT);
             int createRooms = 3;
-            for (int i = 1; i <= createRooms; i++) {
-                rooms.put(i, new Room("Room " + i, server.getInetAddress().getHostAddress(), i, users));
+            for (int i = 0; i < createRooms; i++) {
+                rooms.put(i, new Room("Room " + (i + 1), server.getInetAddress().getHostAddress(), i, users));
             }
+            showLobbyList = new ShowLobbyList(rooms);
+            new Thread(showLobbyList).start();
             roomController = new RoomController(rooms, users, server.getInetAddress().getHostAddress(), createRooms);
             while (true) {
                 User user = new User(server.accept(), rooms, users);

@@ -39,6 +39,7 @@ public class RoomController extends Thread {
             }
             if (roomsIdToRemove.size() > 0) {
                 int id = roomsIdToRemove.remove(0);
+                fxRoomController.removeLobby(rooms.get(id));
                 rooms.remove(id).removeRoom();
                 usedIDs.set(id, false);
             }
@@ -54,7 +55,7 @@ public class RoomController extends Thread {
                     freeID = usedIDs.size();
                     usedIDs.add(true);
                 }
-                rooms.put(freeID, new Room("Room " + (rooms.size() + 1), serverIP, freeID, users));
+                rooms.put(freeID, new Room("Room " + (freeID + 1), serverIP, freeID, users));
                 fxRoomController.addRoom(rooms.get(freeID));
             }
         }

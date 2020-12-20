@@ -27,8 +27,8 @@ public class FXRoomController {
     }
 
     public void setListOfRooms(HashMap<Integer, Room> rooms) {
-        for (int i = 0; i < rooms.values().size(); i++) {
-            listOfRooms.add(i, rooms.get(i));
+        for (int i = 0; i < rooms.size(); i++) {
+            listOfRooms.add(i, rooms.get(i+1));
         }
     }
 }

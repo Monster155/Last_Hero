@@ -118,7 +118,8 @@ public class User extends Thread {
     }
 
     public void acceptNewRoom(Room room) {
-        sendMessage("01" + room.getName() + Protocol.DIVIDER + room.getIp() + Protocol.DIVIDER + room.getId());
+        sendMessage("01" + room.getName() + Protocol.DIVIDER + room.getIp() + Protocol.DIVIDER
+                + room.getId() + Protocol.DIVIDER + room.getUsersCount() + Protocol.DIVIDER + room.getMAX_COUNT_OF_USERS());
     }
 
     public void removeRoom(Room room) {
@@ -130,7 +131,8 @@ public class User extends Thread {
     }
 
     public void startGame() {
-        sendMessage("04" + Protocol.GAME_PORT);
+        sendMessage("04");
+        interrupt();
     }
 
     private boolean sendMessage(String message) {

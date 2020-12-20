@@ -120,17 +120,19 @@ public class User extends Thread {
         this.posX = posX;
         this.posY = posY;
         this.hp = hp;
-        sendPersonalMessage(sender.PERSONAL + posX + Protocol.DIVIDER + posY + Protocol.DIVIDER + hp);
+        // 01 - self
+        // 02 - items
         StringBuilder sb = new StringBuilder();
+        sb.append(posX).append(Protocol.DIVIDER).append(posY).append(Protocol.DIVIDER).append(hp).append(Protocol.DIVIDER);
         for (Item item : items) {
             sb.append(item.toString()).append(Protocol.DIVIDER);
         }
-        sendPersonalMessage(sender.PERSONAL + sb.toString());
+        sendPersonalMessage(sb.toString());
     }
 
     private void sendPersonalMessage(String message) {
         try {
-            out.writeObject(message);
+            out.writeObject(sender.PERSONAL + message);
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();

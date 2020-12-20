@@ -9,7 +9,7 @@ public class Sender {
     private final String SHOOT = "03";
     private final String PICK = "04";
     private final String HANDS = "05";
-    private final String START_GAME = "05";
+    private final String START_GAME = "10";
     private HashMap<Integer, User> users;
 
     public Sender(HashMap<Integer, User> users) {

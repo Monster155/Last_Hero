@@ -64,7 +64,6 @@ public class ShowLobbyList implements Runnable {
                     hBox.setFillHeight(true);
                     vBox.getChildren().add(hBox);
                     vBox.setFillWidth(true);
-                    System.out.println("FX. I drew room:" + i);
                 }
             });
             scrollPane.setContent(vBox);

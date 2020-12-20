@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Room {
-    private final int MAX_COUNT_OF_USERS = 10;
+    private final int MAX_COUNT_OF_USERS = 3;
     private final int TIME_BEFORE_START = 5000;
     private HashMap<Integer, User> connectedUsers;
     private int usersCount;

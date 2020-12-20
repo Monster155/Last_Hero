@@ -38,15 +38,14 @@ public class RoomController extends Thread {
                 usersCount += r.getUsersCount();
                 maxUsersCount += r.getMAX_COUNT_OF_USERS();
             }
-            for(int id : roomsIdToRemove){
+            for (int id : roomsIdToRemove) {
+                fxRoomController.removeRoom(rooms.get(id));
                 rooms.remove(id).removeRoom();
                 usedIDs.set(id, false);
             }
             roomsIdToRemove.clear();
             if (usersCount / maxUsersCount >= filledPercent) {
                 int freeID = -1;
-                for (int i = 0; i < usedIDs.size(); i++) {
-                }
                 for (int i = 0; i < usedIDs.size(); i++) {
                     if (!usedIDs.get(i)) {
                         freeID = i;

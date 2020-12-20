@@ -25,6 +25,13 @@ public class GameRoom {
             Vector2 pos = getPosition();
             u.setStats(pos, 100, items);
         }
+        startGame();
+    }
+
+    private void startGame(){
+        for (User u : users.values()) {
+            u.startGame(users);
+        }
     }
 
     private Vector2 getPosition() {

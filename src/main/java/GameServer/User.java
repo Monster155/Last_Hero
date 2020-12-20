@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User extends Thread {
     private Sender sender;
@@ -130,6 +131,24 @@ public class User extends Thread {
         sendPersonalMessage(sb.toString());
     }
 
+    public void startGame(HashMap<Integer, User> users) {
+        StringBuilder sb = new StringBuilder();
+        for (User u : users.values()) {
+            if (u != this) {
+                sb.append(u.pos.getX()).append(Protocol.DIVIDER);
+                sb.append(u.pos.getY()).append(Protocol.DIVIDER);
+                sb.append(u.hp).append(Protocol.DIVIDER);
+                sb.append(u.userId).append(Protocol.DIVIDER);
+            }
+        }
+        try {
+            out.writeObject(sender.USERS + sb.toString());
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void sendPersonalMessage(String message) {
         try {
             out.writeObject(sender.PERSONAL + message);
@@ -137,5 +156,13 @@ public class User extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId == user.userId;
     }
 }

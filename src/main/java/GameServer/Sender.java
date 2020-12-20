@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class Sender {
     public final String PERSONAL = "00";
+    public final String USERS = "06";
     private final String POS_AND_DIR = "01";
     private final String HP = "02";
     private final String SHOOT = "03";

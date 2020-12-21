@@ -1,7 +1,5 @@
 package ru.itlab.lasthero.ServerSide;
 
-import com.badlogic.gdx.math.Vector2;
-
 import ru.itlab.lasthero.GameServer.Players.PlayerActor;
 import ru.itlab.lasthero.GameServer.Utils.GamePreferences;
 import ru.itlab.lasthero.Protocol;
@@ -37,12 +35,8 @@ public class GameDataSender extends Thread {
         }
     }
 
-    public void shoot(Vector2 pos, Vector2 dir) {
-        Connector.here.sendMessage(SHOOT + pos.x + Protocol.DIVIDER + pos.y
-                + Protocol.DIVIDER + dir.x + Protocol.DIVIDER + dir.y);
-    }
-
-    public void getDamage(int hp, int enemyId) {
-        Connector.here.sendMessage(HP + hp + Protocol.DIVIDER + enemyId);
+    public void taken(int itemId) {
+        if (itemId == -1) return;
+        Connector.here.sendMessage(PICK + player.getPos().x + Protocol.DIVIDER + player.getPos().y + Protocol.DIVIDER + itemId);
     }
 }

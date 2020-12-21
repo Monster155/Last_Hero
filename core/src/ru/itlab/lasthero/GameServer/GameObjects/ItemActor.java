@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import ru.itlab.lasthero.GameServer.Players.PlayerActor;
 
 import static ru.itlab.lasthero.GameServer.Utils.GamePreferences.ITEM_SIZE;
 
@@ -13,16 +15,30 @@ public class ItemActor extends Actor {
 
     private Sprite sprite;
     private Item item;
+    private Rectangle rect;
+    private PlayerActor player;
 
-    public ItemActor(Item item) {
+    public ItemActor(Item item, PlayerActor player) {
+        this.player = player;
+        this.item = item;
         setBounds(item.getPos().x, item.getPos().y, ITEM_SIZE, ITEM_SIZE);
         chooseItem(item.getType().getId());
         sprite.setBounds(getX(), getY(), getWidth(), getHeight());
+        rect = new Rectangle(getX() - 2 * getWidth(), getY() - 2 * getHeight(), getWidth() * 5, getHeight() * 5);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         sprite.draw(batch);
+    }
+
+    @Override
+    public void act(float delta) {
+        if (rect.contains(player.getCenterPos())) {
+            player.setReadyItem(item.getId());
+        } else if (player.getReadyItem() == item.getId()) {
+            player.setReadyItem(-1);
+        }
     }
 
     private void chooseItem(int itemId) {
@@ -52,6 +68,6 @@ public class ItemActor extends Actor {
     }
 
     public void delete() {
-        getParent().removeActor(this);
+        getStage().getActors().removeValue(this, true);
     }
 }

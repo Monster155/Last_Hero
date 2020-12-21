@@ -10,12 +10,14 @@ public class Player {
     private int hp;
     private int id;
     private PlayerActor actor;
+    private int score;
 
     public Player(int id, Vector2 pos, int hp) {
         pos.scl(MAP_SCALE);
         this.pos = pos;
         this.hp = hp;
         this.id = id;
+        score = 0;
     }
 
     public void setActor(PlayerActor actor) {
@@ -28,6 +30,14 @@ public class Player {
 
     public int getId() {
         return id;
+    }
+
+    public void increaseScore() {
+        score++;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public Vector2 getPos() {

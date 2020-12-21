@@ -155,7 +155,7 @@ public class GameScreen implements Screen {
     private void updateItems() {
         while (updItems.size() > 0) {
             Item item = updItems.remove(0);
-            ItemActor actor = new ItemActor(item);
+            ItemActor actor = new ItemActor(item, playerActor);
             item.setActor(actor);
             stage.addActor(actor);
         }

@@ -13,4 +13,5 @@ public class GamePreferences {
     public static boolean is_attack_key_just_pressed = false;
     public static Vector2 move_joystick_direction = new Vector2(0, 0);
     public static Vector2 attack_joystick_direction = new Vector2(0, 0);
+    public static boolean is_take = false;
 }

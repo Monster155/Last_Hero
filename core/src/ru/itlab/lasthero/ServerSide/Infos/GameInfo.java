@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 
-import ru.itlab.lasthero.GameServer.GameObjects.EnemyBullet;
 import ru.itlab.lasthero.GameServer.GameObjects.Item;
 import ru.itlab.lasthero.GameServer.GameScreen;
 import ru.itlab.lasthero.GameServer.Players.Enemy;
@@ -17,6 +16,7 @@ public class GameInfo extends InfoParent {
     private MainActivity ma;
     private HashMap<Integer, Enemy> enemies;
     private HashMap<Integer, Item> items;
+    private Player player;
 
     public GameInfo(MainActivity ma) {
         this.ma = ma;
@@ -27,10 +27,11 @@ public class GameInfo extends InfoParent {
 
     private void personal(String[] data) {
         int i = 0;
-        gameScreen.setPlayer(new Player(
+        player = new Player(
                 Integer.parseInt(data[i++]),
                 new Vector2(Float.parseFloat(data[i++]), Float.parseFloat(data[i++])),
-                Integer.parseInt(data[i++])));
+                Integer.parseInt(data[i++]));
+        gameScreen.setPlayer(player);
         while (i < data.length) {
             Item item = new Item(new Vector2(Float.parseFloat(data[i++]), Float.parseFloat(data[i++])),
                     Integer.parseInt(data[i++]), Integer.parseInt(data[i++]));
@@ -42,7 +43,6 @@ public class GameInfo extends InfoParent {
     }
 
     private void getEnemies(String data[]) {
-        if (data == null || data[0] == null || data[0].equals("")) return;
         int i = 0;
         while (i < data.length) {
             Enemy enemy = new Enemy(new Vector2(Float.parseFloat(data[i++]), Float.parseFloat(data[i++])),
@@ -65,12 +65,16 @@ public class GameInfo extends InfoParent {
             enemy.updatePosAndDir(pos, dir);
     }
 
-    private void shoot(String data[]) {
-        int i = 0;
-        int id = Integer.parseInt(data[i++]);
-        Vector2 pos = new Vector2(Float.parseFloat(data[i++]), Float.parseFloat(data[i++]));
-        Vector2 dir = new Vector2(Float.parseFloat(data[i++]), Float.parseFloat(data[i++]));
-        gameScreen.addBullet(new EnemyBullet(id, pos, dir));
+    private void pick(String data[]) {
+        System.out.println("!!!");
+        int userId = Integer.parseInt(data[0]);
+        int id = Integer.parseInt(data[1]);
+        System.out.println(id + " " + userId);
+        items.get(id).delete();
+        System.out.println(player.getScore());
+        if (player.getId() == userId)
+            player.increaseScore();
+        System.out.println(player.getScore());
     }
 
     @Override
@@ -90,10 +94,10 @@ public class GameInfo extends InfoParent {
                 break;
             // shoot
             case 3:
-                shoot(data);
                 break;
             // pick
             case 4:
+                pick(data);
                 break;
             // hands
             case 5:
@@ -104,6 +108,11 @@ public class GameInfo extends InfoParent {
             // start game
             case 10:
                 gameScreen.startGame();
+                break;
+            // end game
+            case 90:
+                ma.endGameScreen.setScore(player.getScore());
+                ma.setChangeScreen(ma.endGameScreen);
                 break;
         }
     }

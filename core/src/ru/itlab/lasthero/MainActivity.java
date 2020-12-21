@@ -7,8 +7,8 @@ import ru.itlab.lasthero.GameServer.GameScreen;
 import ru.itlab.lasthero.GameServer.Utils.Controller;
 import ru.itlab.lasthero.LobbyServer.Draw.LobbyListScreen.LobbyListScreen;
 import ru.itlab.lasthero.LobbyServer.Draw.LobbyScreen.LobbyScreen;
-import ru.itlab.lasthero.ServerSide.Connector;
 import ru.itlab.lasthero.Menu.MenuScreen;
+import ru.itlab.lasthero.ServerSide.Connector;
 
 public class MainActivity extends Game {
 
@@ -16,6 +16,7 @@ public class MainActivity extends Game {
     public final LobbyListScreen lobbyListScreen;
     public final LobbyScreen lobbyScreen;
     public final GameScreen gameScreen;
+    public final EndGameScreen endGameScreen;
 
     private boolean changeScreen;
     private Screen screenToChange;
@@ -25,6 +26,7 @@ public class MainActivity extends Game {
         lobbyListScreen = new LobbyListScreen();
         lobbyScreen = new LobbyScreen();
         gameScreen = new GameScreen(moduleID);
+        endGameScreen = new EndGameScreen();
 
         Connector.here.init(this);
         changeScreen = false;

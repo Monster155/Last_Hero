@@ -28,6 +28,10 @@ public class Item {
         return itemId;
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return pos.getX() + Protocol.DIVIDER + pos.getY() + Protocol.DIVIDER + getItemId() + Protocol.DIVIDER + id;

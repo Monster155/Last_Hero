@@ -18,6 +18,9 @@ public class User extends Thread {
     private String userName;
     private String ip;
 
+    private ArrayList<Item> items;
+    private boolean[] takenItems;
+
     private Vector2 pos;
     private int hp;
 
@@ -91,22 +94,45 @@ public class User extends Thread {
     }
 
     private void hp(String data[]) {
-        int deltaHP = Integer.parseInt(data[0]);
-        if (deltaHP < 10)
-            hp -= deltaHP;
+        int hp = Integer.parseInt(data[0]);
+        int enemyId = Integer.parseInt(data[1]);
+//        if (hp <= 0) //use enemyId and say about kill
         sender.sendHP(String.valueOf(hp), userId);
     }
 
     private void shoot(String data[]) {
-        float dirX = Float.parseFloat(data[0]);
-        float dirY = Float.parseFloat(data[1]);
-        sender.sendShoot(dirX + Protocol.DIVIDER + dirY, userId);
+        float posX = Float.parseFloat(data[0]);
+        float posY = Float.parseFloat(data[1]);
+        float dirX = Float.parseFloat(data[2]);
+        float dirY = Float.parseFloat(data[3]);
+        sender.sendShoot(posX + Protocol.DIVIDER + posY + Protocol.DIVIDER
+                + dirX + Protocol.DIVIDER + dirY, userId);
     }
 
     private void pick(String data[]) {
-        int itemId = Integer.parseInt(data[0]);
-        //TODO check for item in place
-        sender.sendPick(String.valueOf(itemId), userId);
+        float x = Float.parseFloat(data[0]);
+        float y = Float.parseFloat(data[1]);
+        int itemId = Integer.parseInt(data[2]);
+        System.out.println(Math.abs(items.get(itemId).getPos().getX() - x));
+        System.out.println(Math.abs(items.get(itemId).getPos().getY() - y));
+        if (Math.abs(items.get(itemId).getPos().getX() - x) < 10
+                && Math.abs(items.get(itemId).getPos().getY() - y) < 10) {
+            if (takenItems[itemId]) return;
+            System.out.println(itemId + " taken");
+            sender.sendPick(String.valueOf(itemId), userId);
+            takenItems[itemId] = true;
+//            sender.endGame();
+        }
+        boolean isAllTaken = true;
+        for (boolean isTaken : takenItems) {
+            if (!isTaken) {
+                isAllTaken = false;
+                break;
+            }
+        }
+        if (isAllTaken) {
+            sender.endGame();
+        }
     }
 
     private void hands(String data[]) {
@@ -125,6 +151,11 @@ public class User extends Thread {
     }
 
     public void setStats(Vector2 pos, int hp, ArrayList<Item> items) {
+        this.items = items;
+        takenItems = new boolean[items.size()];
+        for (int i = 0; i < takenItems.length; i++) {
+            takenItems[i] = false;
+        }
         this.pos = pos;
         this.hp = hp;
         // 01 - self

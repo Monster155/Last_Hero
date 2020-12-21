@@ -13,6 +13,7 @@ public class Sender {
     private final String PICK = "04";
     private final String HANDS = "05";
     private final String START_GAME = "10";
+    private final String FINISH_GAME = "90";
     private HashMap<Integer, User> users;
     private boolean[] readyPlayersCount;
 
@@ -37,6 +38,7 @@ public class Sender {
     }
 
     public void sendHP(String message, int senderId) {
+        System.out.println(message + " " + senderId);
         sendMessage(HP + senderId + Protocol.DIVIDER + message, senderId);
     }
 
@@ -45,7 +47,10 @@ public class Sender {
     }
 
     public void sendPick(String message, int senderId) {
-        sendMessage(PICK + senderId + Protocol.DIVIDER + message, senderId);
+        for (User u : users.values()) {
+            u.getMessage(PICK + senderId + Protocol.DIVIDER + message);
+        }
+//        sendMessage(PICK + senderId + Protocol.DIVIDER + message, senderId);
     }
 
     public void sendHands(String message, int senderId) {
@@ -55,6 +60,11 @@ public class Sender {
     public void startGame() {
         sendMessage(START_GAME, -1);
         System.out.println("Game started");
+    }
+
+    public void endGame() {
+        sendMessage(FINISH_GAME, -1);
+        System.out.println("Game finished");
     }
 
     private void sendMessage(String message, int senderId) {

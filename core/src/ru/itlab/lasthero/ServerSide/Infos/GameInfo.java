@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 
+import ru.itlab.lasthero.GameServer.GameObjects.EnemyBullet;
 import ru.itlab.lasthero.GameServer.GameObjects.Item;
 import ru.itlab.lasthero.GameServer.GameScreen;
 import ru.itlab.lasthero.GameServer.Players.Enemy;
@@ -41,6 +42,7 @@ public class GameInfo extends InfoParent {
     }
 
     private void getEnemies(String data[]) {
+        if (data == null || data[0] == null || data[0].equals("")) return;
         int i = 0;
         while (i < data.length) {
             Enemy enemy = new Enemy(new Vector2(Float.parseFloat(data[i++]), Float.parseFloat(data[i++])),
@@ -63,6 +65,14 @@ public class GameInfo extends InfoParent {
             enemy.updatePosAndDir(pos, dir);
     }
 
+    private void shoot(String data[]) {
+        int i = 0;
+        int id = Integer.parseInt(data[i++]);
+        Vector2 pos = new Vector2(Float.parseFloat(data[i++]), Float.parseFloat(data[i++]));
+        Vector2 dir = new Vector2(Float.parseFloat(data[i++]), Float.parseFloat(data[i++]));
+        gameScreen.addBullet(new EnemyBullet(id, pos, dir));
+    }
+
     @Override
     public void executeCommand(int command, String[] data) {
         System.out.println("Game");
@@ -80,6 +90,7 @@ public class GameInfo extends InfoParent {
                 break;
             // shoot
             case 3:
+                shoot(data);
                 break;
             // pick
             case 4:

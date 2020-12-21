@@ -14,11 +14,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+
+import ru.itlab.lasthero.GameServer.GameMasks;
 
 public class TMObjectsUtils {
     public static Array<Fixture> buildBuildingsBodies(TiledMap tiledMap, World world, float density, String layerName) {
@@ -53,6 +56,10 @@ public class TMObjectsUtils {
         shape.dispose();
         fixture.setUserData("world");
         fixture.getBody().setTransform(0, 0, 0);
+        Filter filter = new Filter();
+        filter.categoryBits = GameMasks.WORLD_C;
+        filter.maskBits = GameMasks.WORLD_M;
+        fixture.setFilterData(filter);
         return fixture;
     }
 

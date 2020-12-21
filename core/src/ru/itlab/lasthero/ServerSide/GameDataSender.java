@@ -1,5 +1,7 @@
 package ru.itlab.lasthero.ServerSide;
 
+import com.badlogic.gdx.math.Vector2;
+
 import ru.itlab.lasthero.GameServer.Players.PlayerActor;
 import ru.itlab.lasthero.GameServer.Utils.GamePreferences;
 import ru.itlab.lasthero.Protocol;
@@ -18,6 +20,7 @@ public class GameDataSender extends Thread {
 
     public GameDataSender(PlayerActor player) {
         this.player = player;
+        player.setGds(this);
         lastTime = System.currentTimeMillis();
         start();
     }
@@ -32,5 +35,14 @@ public class GameDataSender extends Thread {
                         + Protocol.DIVIDER + GamePreferences.move_joystick_direction.y);
             }
         }
+    }
+
+    public void shoot(Vector2 pos, Vector2 dir) {
+        Connector.here.sendMessage(SHOOT + pos.x + Protocol.DIVIDER + pos.y
+                + Protocol.DIVIDER + dir.x + Protocol.DIVIDER + dir.y);
+    }
+
+    public void getDamage(int hp, int enemyId) {
+        Connector.here.sendMessage(HP + hp + Protocol.DIVIDER + enemyId);
     }
 }

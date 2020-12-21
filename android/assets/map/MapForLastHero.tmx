@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="17" tileheight="17" infinite="0" nextlayerid="13" nextobjectid="441">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="17" tileheight="17" infinite="0" nextlayerid="13" nextobjectid="442">
  <tileset firstgid="1" source="Oreal.tsx"/>
  <tileset firstgid="1681" source="lastHeroCity.tsx"/>
  <layer id="1" name="land" width="100" height="100" locked="1">
@@ -822,6 +822,9 @@
   </object>
   <object id="440" x="1445" y="323">
    <polygon points="0,0 0,-17 153,-17 153,85 136,85 135.909,78.0909 148.091,78.0909 148.273,16.8182 136,17 136,0 119,0 119,-11.7273 85,-11.1818 85,5.90909 80.0909,5.90909 80.2727,-11 37.9091,-10.8182 37.9091,5.90909 33.7273,6.09091 33.7273,-11.1818 4.27273,-11 3.90909,0.0909091"/>
+  </object>
+  <object id="441" x="0" y="0">
+   <polygon points="0,0 0,1700 1700,1700 1700,0"/>
   </object>
  </objectgroup>
  <objectgroup id="11" name="o_spawn" visible="0" locked="1">

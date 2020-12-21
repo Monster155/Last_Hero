@@ -25,7 +25,7 @@ public class Level extends Actor {
 //        MapObjects objects = tiledMap.getLayers().get(8).getObjects();
 //        TiledObjectUtil.buildBuildingsBodies(tiledMap, world, unitScale, "o_walls");
 //        TiledObjectUtil.buildBuildingsBodies(tiledMap, world, unitScale, "o_trees");
-        ru.itlab.lasthero.GameServer.Utils.TMObjectsUtils.buildBuildingsBodies(tiledMap, world, MAP_SCALE, "o_walls");
+        TMObjectsUtils.buildBuildingsBodies(tiledMap, world, MAP_SCALE, "o_walls");
         TMObjectsUtils.buildBuildingsBodies(tiledMap, world, MAP_SCALE, "o_trees");
     }
 
